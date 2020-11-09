@@ -102,6 +102,7 @@ STATIC_URL = "/static/"
 # Custom settings
 #
 
+AUTH_USER_MODEL = "costos.Profesional"
 
 # Internationalization
 
@@ -112,9 +113,12 @@ TIME_ZONE = "America/Buenos_Aires"
 
 APPS_BEFORE = [
     # my applications
+    "costos.apps.CostosConfig",
 ]
 APPS_AFTER = [
-    # my applications
+    # other applications
+    "django_extensions",
+    "crispy_forms"
 ]
 # Apps installed before have priority, for example, with templates with the same name,
 # typically convenient when your app overrides login/logout templates
@@ -151,3 +155,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = "bootstrap4"
