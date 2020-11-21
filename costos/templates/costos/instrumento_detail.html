@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Instrumentos{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-ruler-combined"></i>
+<span>Instrumento /</span>
+<span class="text-primary">{{ object }}</span>
+{% endblock page-heading %}
+{% block page-heading-buttons %}
+{% if object.empresa == user.empresa %}
+<div class="btn-group" role="group" aria-label="Actions">
+  <a href="{{ object.get_delete_url }}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">
+    <i class="fas fa-trash fa-sm text-white-50"></i> Eliminar</a>
+  <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
+</div>
+{% endif %}
+{% endblock page-heading-buttons %}
+
+{% block content %}
+<div class="row">
+  <!-- Valor USD -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+              Valor reposición U$D</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              U$D {{ object.valor_USD }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Valor ARS -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+              Valor reposición ARS</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              $ {{ object.valor_ARS }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Vida útil -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-warning shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+              vida útil</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{ object.vida_util }} jornadas
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-recycle fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Costo por jornada -->
+  <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+              Costo por jornada</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              $ {{ object.costo_jornada }}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-calendar-day fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+[
+    {
+        "model": "costos.empresa",
+        "pk": 1,
+        "fields": {
+            "nombre": "Estudio de Agrimensura \"Enrique A. Pestarini\"",
+            "horas_semanales": 30
+        }
+    },
+    {
+        "model": "costos.empresa",
+        "pk": 2,
+        "fields": {
+            "nombre": "Datum",
+            "horas_semanales": 40
+        }
+    }
+]

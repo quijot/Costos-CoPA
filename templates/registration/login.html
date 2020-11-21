@@ -1,0 +1,59 @@
+{% extends "card.html" %}
+
+{% block title %}Iniciar sesión{% endblock title %}
+
+{% block card %}
+<style>
+.bg-login-image {
+  /* background: url("http://www.copasfn.org.ar/wp-content/uploads/2019/08/logo-web.png"); */
+  background: url("http://www.copasfn.org.ar/wp-content/uploads/2019/08/sum-mision-1024x770.jpg");
+  background-position: center;
+  background-size: cover; /* contain */
+  background-repeat: no-repeat;
+}
+</style>
+<!-- Nested Row within Card Body -->
+<div class="row">
+  <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+  <div class="col-lg-6">
+    <div class="p-5">
+      <div class="text-center">
+        <img class="mb-4" src="http://www.copasfn.org.ar/wp-content/uploads/2019/08/logo-web.png" width="300px">
+        <h1 class="h3 text-gray-900 mb-4">{% block page-heading %}¡Bienvenid@!{% endblock %}</h1>
+      </div>
+      {% block content %}
+      {% if form.errors %}
+      {{ form.non_field_errors }}
+      {% endif %}
+      {% if next %}
+      {% if user.is_authenticated %}
+      <p class="text-danger">No tiene permisos suficientes. Para continuar, ingrese los datos de una cuenta con permisos de acceso.</p>
+      {% else %}
+      <p class="text-info">Ingrese sus datos para acceder.</p>
+      {% endif %}
+      {% endif %}
+      <form class="user" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="form-control form-control-user" aria-describedby="userHelp" placeholder="Usuari@">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control form-control-user" placeholder="Contraseña">
+        </div>
+        <div class="form-group">
+          <div class="custom-control custom-checkbox small">
+            <input type="checkbox" class="custom-control-input" id="customCheck">
+            <label class="custom-control-label" for="customCheck">Recordarme</label>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary btn-user btn-block" value="Ingresar">
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+      <hr>
+      <div class="text-center">
+        <a class="small" href="{% url 'password_reset' %}">Olvidé mi contraseña</a>
+      </div>
+      {% endblock content %}
+    </div>
+  </div>
+  {% endblock card %}

@@ -1,0 +1,42 @@
+[
+    {
+        "model": "costos.instrumento",
+        "pk": 1,
+        "fields": {
+            "empresa": 1,
+            "nombre": "Estación Total Trimble M3",
+            "valor_USD": "6000.00",
+            "vida_util": 400
+        }
+    },
+    {
+        "model": "costos.instrumento",
+        "pk": 2,
+        "fields": {
+            "empresa": 1,
+            "nombre": "Notebook xavier",
+            "valor_USD": "1400.00",
+            "vida_util": 600
+        }
+    },
+    {
+        "model": "costos.instrumento",
+        "pk": 3,
+        "fields": {
+            "empresa": 1,
+            "nombre": "PC Dibujo",
+            "valor_USD": "1000.00",
+            "vida_util": 600
+        }
+    },
+    {
+        "model": "costos.instrumento",
+        "pk": 4,
+        "fields": {
+            "empresa": 1,
+            "nombre": "PC Alberto",
+            "valor_USD": "1000.00",
+            "vida_util": 600
+        }
+    }
+]

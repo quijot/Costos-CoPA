@@ -1,24 +1,36 @@
 from django.contrib import admin
-
-# from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-# from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
 from .models import (
+    Actuantes,
     Combustible,
     Empresa,
     GastoEmpresa,
     GastoPersonal,
+    Instrumental,
     Instrumento,
+    Movilidad,
+    ParametroGlobal,
     Profesional,
     TipoGasto,
     Trabajo,
     Vehiculo,
 )
 
+# admin.site.register(ParametroGlobal)
 admin.site.register(TipoGasto)
 
 
-class ProfesionalInline(admin.TabularInline):
+@admin.register(ParametroGlobal)
+class ParametroGlobalAdmin(admin.ModelAdmin):
+    list_display = [
+        "modified",
+        "cotizacion_dolar",
+        "modulo_tributario",
+    ]
+
+
+class ProfesionalInline(admin.StackedInline):
     model = Profesional
     extra = 0
 
@@ -43,9 +55,27 @@ class GastoPersonalInline(admin.TabularInline):
     extra = 0
 
 
+class ActuantesInline(admin.TabularInline):
+    model = Actuantes
+    extra = 0
+    verbose_name_plural = "actuantes"
+
+
+class MovilidadInline(admin.TabularInline):
+    model = Movilidad
+    extra = 0
+    verbose_name_plural = "movilidad"
+
+
+class InstrumentalInline(admin.TabularInline):
+    model = Instrumental
+    extra = 0
+    verbose_name_plural = "instrumental"
+
+
 @admin.register(Combustible)
 class CombustibleAdmin(admin.ModelAdmin):
-    list_display = ["combustible", "valor_litro"]
+    list_display = ["combustible", "valor_litro", "modified"]
     # list_filter = []
     # search_fields = []
     # fieldsets = [
@@ -99,29 +129,25 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 
 @admin.register(Profesional)
-class ProfesionalAdmin(admin.ModelAdmin):
-    list_display = ["username", "matricula", "last_name", "first_name", "costo_por_hora"]
-    # list_filter = []
-    # search_fields = []
-    # fieldsets = [
-    #     (
-    #         "Algo",
-    #         {
-    #             "fields": [
-    #                 ("field1", "field2"),
-    #                 ("field3", "field4", "field5"),
-    #             ],
-    #             "classes": ["extrapretty"],
-    #         },
-    #     )
-    # ]
+class ProfesionalAdmin(UserAdmin):
+    list_display = ("username", "matricula", "last_name", "first_name", "costo_por_hora", "is_staff")
+    list_filter = UserAdmin.list_filter + ("empresa",)
+    search_fields = UserAdmin.search_fields + ("matricula", "cuit")
+    custom_fields = (("CoPA", {"fields": ("empresa", "matricula", "cuit", "costo_por_hora")}),)
+    fieldsets = UserAdmin.fieldsets + custom_fields
+    add_fieldsets = UserAdmin.add_fieldsets + custom_fields
     readonly_fields = ["costo_por_hora"]
     inlines = [GastoPersonalInline]
 
 
+# Re-register UserAdmin
+# admin.site.unregister(User)
+# admin.site.register(Profesional, UserAdmin)
+
+
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "valor_a_nuevo", "kilometraje_anual", "tipo_combustible", "rendimiento", "costo_km"]
+    list_display = ["nombre", "valor", "kilometraje_anual", "tipo_combustible", "rendimiento", "costo_km"]
     # list_filter = []
     # search_fields = []
     # fieldsets = [
@@ -148,7 +174,7 @@ class VehiculoAdmin(admin.ModelAdmin):
         "amortizacion_lavado",
         "amortizacion_neumaticos",
         "reparaciones",
-        "respuestos",
+        "repuestos",
         "service",
         "lubricacion",
         "costo_km",
@@ -181,7 +207,7 @@ class InstrumentoAdmin(admin.ModelAdmin):
 
 @admin.register(Trabajo)
 class TrabajoAdmin(admin.ModelAdmin):
-    list_display = ["expediente", "fecha", "comitente", "costo_total"]
+    list_display = ["expediente", "fecha", "comitente"]  # , "costo_total"]
     # list_filter = []
     # search_fields = []
     # fieldsets = [
@@ -196,12 +222,14 @@ class TrabajoAdmin(admin.ModelAdmin):
     #         },
     #     )
     # ]
-    filter_horizontal = ["profesionales", "vehiculos", "instrumentos"]
+    inlines = [ActuantesInline, MovilidadInline, InstrumentalInline]
     readonly_fields = [
+        "empresa",
+        "horas_total",
         "sellado_fiscal",
         "gastos_de_empresa",
         "costo_de_profesionales",
-        "movilidad",
+        "costo_movilidad",
         "amortizacion_de_instrumentos",
         "costo_total",
     ]

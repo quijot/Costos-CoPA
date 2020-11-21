@@ -1,0 +1,27 @@
+{% extends "registration/login.html" %}
+
+{% block title %}Fin{% endblock title %}
+
+{% block page-heading %}
+<i class="fas fa-sign-out-alt"></i>
+<span>Sesión finalizada</span>
+{% endblock page-heading %}
+
+{% block content %}
+<div class="mt-1 pt-1 text-center">
+  <p>
+    <span class="text">Hasta la próxima...</span>
+  </p>
+</div>
+<div class="mt-5 pt-5 text-center">
+  <p class="mt-2 pt-2">
+    <span class="text">¿Desea volver a ingesar?</span>
+  </p>
+</div>
+<a href="{% url 'login'%}" class="btn btn-primary btn-user btn-block">
+  <span class="icon text-white-50">
+    <i class="fas fa-sign-in-alt"></i>
+  </span>
+  <span class="text">Ingresar</span>
+</a>
+{% endblock content %}

@@ -1,0 +1,83 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+    <div class="sidebar-brand-icon">
+      <i class="fas fa-chart-line"></i> Costos
+    </div>
+    <div class="sidebar-brand-text mx-3">{{ settings.CRISPY_TEMPLATE_PACK }}</div>
+  </a>
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'index' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Tablero principal</span>
+    </a>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    {% if user.empresa %}
+    {{ user.empresa }}
+    {% else %}
+    Mi Empresa
+    {% endif %}
+  </div>
+
+
+  {% if not user.empresa %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'empresa_create' %}">
+      <i class="fas fa-fw fa-building"></i>
+      <span>Crear Mi Empresa</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'empresa_detail' user.empresa.pk %}">
+      <i class="fas fa-fw fa-building"></i>
+      <span>Mi Empresa</span>
+    </a>
+  </li>
+  <!-- Nav Item - Profesionales Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'profesional_list' %}">
+      <i class="fas fa-fw fa-users"></i>
+      <span>Profesionales</span>
+    </a>
+  </li>
+  <!-- Nav Item - Instrumentos Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'instrumento_list' %}">
+      <i class="fas fa-fw fa-ruler-combined"></i>
+      <span>Instrumentos</span>
+    </a>
+  </li>
+  <!-- Nav Item - Vehiculos Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'vehiculo_list' %}">
+      <i class="fas fa-fw fa-truck-monster"></i>
+      <span>Vehículos</span>
+    </a>
+  </li>
+  <!-- Nav Item - Trabajos Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fas fa-fw fa-map"></i>
+      <span>Trabajos</span>
+    </a>
+  </li>
+  {% endif %}
+
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+</ul>
+<!-- End of Sidebar -->

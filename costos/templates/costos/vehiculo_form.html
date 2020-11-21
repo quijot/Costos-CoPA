@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Vehículos{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-truck-monster"></i>
+Vehículo /
+<span class="text-primary">{% if object %}Editando {{ object }}{% else %}Agregando{% endif %}</span>
+{% endblock %}
+
+{% block content %}
+<div class="card border-left-primary shadow mb-4">
+  <div class="card-body">
+    {% crispy form %}
+  </div>
+</div>
+{% endblock %}

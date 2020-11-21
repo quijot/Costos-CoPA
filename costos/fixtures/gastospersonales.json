@@ -1,0 +1,46 @@
+[
+    {
+        "model": "costos.gastopersonal",
+        "pk": 1,
+        "fields": {
+            "tipo": 1,
+            "descripcion": "",
+            "monto": "1740.00",
+            "periodo": 30,
+            "profesional": 2
+        }
+    },
+    {
+        "model": "costos.gastopersonal",
+        "pk": 2,
+        "fields": {
+            "tipo": 2,
+            "descripcion": "",
+            "monto": "0.00",
+            "periodo": 30,
+            "profesional": 2
+        }
+    },
+    {
+        "model": "costos.gastopersonal",
+        "pk": 3,
+        "fields": {
+            "tipo": 3,
+            "descripcion": "",
+            "monto": "3941.00",
+            "periodo": 30,
+            "profesional": 2
+        }
+    },
+    {
+        "model": "costos.gastopersonal",
+        "pk": 4,
+        "fields": {
+            "tipo": 4,
+            "descripcion": "",
+            "monto": "5100.00",
+            "periodo": 30,
+            "profesional": 2
+        }
+    }
+]

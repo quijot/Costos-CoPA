@@ -1,0 +1,68 @@
+[
+    {
+        "model": "costos.gastoempresa",
+        "pk": 1,
+        "fields": {
+            "tipo": 5,
+            "descripcion": "",
+            "monto": "400.00",
+            "periodo": 30,
+            "empresa": 1
+        }
+    },
+    {
+        "model": "costos.gastoempresa",
+        "pk": 2,
+        "fields": {
+            "tipo": 7,
+            "descripcion": "",
+            "monto": "500.00",
+            "periodo": 7,
+            "empresa": 1
+        }
+    },
+    {
+        "model": "costos.gastoempresa",
+        "pk": 3,
+        "fields": {
+            "tipo": 8,
+            "descripcion": "",
+            "monto": "600.00",
+            "periodo": 30,
+            "empresa": 1
+        }
+    },
+    {
+        "model": "costos.gastoempresa",
+        "pk": 4,
+        "fields": {
+            "tipo": 10,
+            "descripcion": "",
+            "monto": "1200.00",
+            "periodo": 60,
+            "empresa": 1
+        }
+    },
+    {
+        "model": "costos.gastoempresa",
+        "pk": 5,
+        "fields": {
+            "tipo": 11,
+            "descripcion": "",
+            "monto": "1500.00",
+            "periodo": 30,
+            "empresa": 1
+        }
+    },
+    {
+        "model": "costos.gastoempresa",
+        "pk": 6,
+        "fields": {
+            "tipo": 14,
+            "descripcion": "",
+            "monto": "340.00",
+            "periodo": 30,
+            "empresa": 1
+        }
+    }
+]

@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+{% load l10n %}
+{% block title %}Profesional{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-user-tie"></i>
+<span>Profesional /</span>
+<span class="text-primary">{{ object }}</span>
+{% endblock page-heading %}
+{% block page-heading-buttons %}
+{% if object.pk == user.pk %}
+<div class="btn-group" role="group" aria-label="Actions">
+  <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
+</div>
+{% endif %}
+{% endblock page-heading-buttons %}
+
+{% block content %}
+<div class="row">
+  <!-- Empresa -->
+  <div class="col-xl-8 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+              Empresa</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {% if user.empresa %}
+              {{ user.empresa }}
+              {% else %}
+              <a href="{% url 'empresa_create' %}"><span>Crear Mi Empresa</span></a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-building fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Costo -->
+  <div class="col-xl-4 mb-4">
+    <div class="card border-left-danger shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+              Costo por hora</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">$ {{ user.costo_por_hora }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-stopwatch fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Details -->
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card border-left-primary shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+          Más datos</strong>
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover table-striped">
+            <tbody>
+              <tr>
+                <th>Matrícula</th>
+                <td>
+                  <strong>{{ object.matricula }}</strong>
+                </td>
+              </tr>
+              <tr>
+                <th>Nombre</th>
+                <td>
+                  <strong>{{ object.apellido|upper }} {{ object.nombre }}</strong>
+                </td>
+              </tr>
+              <tr>
+                <th>CUIT</th>
+                <td>
+                  <a href="https://www.cuitonline.com/search.php?q={{ object.cuit }}"
+                    target="blank">{{ object.cuit }}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>Correo electrónico</th>
+                <td>
+                  <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <!-- Chart -->
+    <div class="card border-left-primary shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Gastos mensuales <span class="text-dark">$
+            {{ object.gastos_mensuales|localize }}</span></h6>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="chart-pie pt-4 pb-2">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+          <canvas id="myPieChart" width="481" height="245" class="chartjs-render-monitor"
+            style="display: block; width: 481px; height: 245px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Gastos Personales -->
+<div class="card border-left-primary shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">
+      Detalle de Gastos Personales ({{ object.gastos.count }})
+    </h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <!-- <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0"> -->
+      <table class="table table-sm table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th style="text-align:right">Monto</th>
+            <th style="text-align:right">Periodo</th>
+            <th style="text-align:right">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in object.gastos.all %}
+          <tr>
+            <td>{{ o.tipo }}</td>
+            <td style="text-align:right">$ {{ o.monto }}</td>
+            <td style="text-align:right">{{ o.get_periodo_display }} ({{ o.periodo }})</td>
+            <td style="text-align:right">{{ o.descripcion }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  var style = getComputedStyle(document.body);
+  var theme = {};
+
+  theme.primary = style.getPropertyValue('--primary');
+  theme.secondary = style.getPropertyValue('--secondary');
+  theme.success = style.getPropertyValue('--success');
+  theme.info = style.getPropertyValue('--info');
+  theme.warning = style.getPropertyValue('--warning');
+  theme.danger = style.getPropertyValue('--danger');
+  theme.light = style.getPropertyValue('--light');
+  theme.dark = style.getPropertyValue('--dark');
+
+  theme_colors = [theme.primary, theme.success, theme.info, theme.warning, theme.danger, theme.primary, theme.success, theme.info, theme.warning, theme.danger, theme.primary, theme.success, theme.info, theme.warning, theme.danger, theme.primary, theme.success, theme.info, theme.warning, theme.danger, theme.primary, theme.success, theme.info, theme.warning, theme.danger, theme.primary, theme.success, theme.info, theme.warning, theme.danger,];
+</script>
+<script src="{% static 'dashboard/vendor/chart.js/Chart.min.js' %}"></script>
+<script>
+  // Set new default font family and font color to mimic Bootstrap's default styling
+  // Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  // Chart.defaults.global.defaultFontColor = '#858796';
+
+  // Pie Chart Example
+  var ctx = document.getElementById("myPieChart");
+  var myPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [{% for g in object.gastos.all %}"{{ g }}", {% endfor %}],
+      datasets: [{
+        data: [{% for g in object.gastos.all %}{{ g.mensual | safe }}, {% endfor %}],
+          // backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc',],
+          backgroundColor: theme_colors,
+          // hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf',],
+          hoverBackgroundColor: theme.secondary,
+          // hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+      legend: {
+        // display: false
+      },
+      cutoutPercentage: 10,
+    },
+  });
+</script>
+{% endblock javascripts %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+{% endblock stylesheets %}
+{% block title %}Instrumentos{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-ruler-combined"></i>
+Instrumentos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}
+{% endblock page-heading %}
+{% block page-heading-buttons %}
+{% if user.empresa %}
+<div class="btn-group" role="group" aria-label="Actions">
+  <a href="{% url 'instrumento_create' %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+      class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
+</div>
+{% endif %}
+{% endblock page-heading-buttons %}
+
+{% block content %}
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Valor USD</th>
+            <th>Valor ARS</th>
+            <th>Vida útil</th>
+            <th>Jornada</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>
+              <a href="{{ object.get_absolute_url }}">{{ object.nombre }}</a>
+            </td>
+            <td>U$D {{ object.valor_USD }}</td>
+            <td>$ {{ object.valor_ARS }}</td>
+            <td>{{ object.vida_util }} jornadas</td>
+            <td>$ {{ object.costo_jornada }}</td>
+            <td>
+              <a href="{{ object.get_absolute_url }}" class="btn btn-info btn-circle btn-sm" title="Ver">
+                <i class="fas fa-info"></i>
+              </a>
+              <a href="{{ object.get_update_url }}" class="btn btn-primary btn-circle btn-sm" title="Editar">
+                <i class="fas fa-pen"></i>
+              </a>
+              <a href="{{ object.get_delete_url }}" class="btn btn-danger btn-circle btn-sm" title="Eliminar">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="{% static 'dashboard/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'dashboard/js/dataTables.config.js' %}"></script>
+{% endblock javascripts %}

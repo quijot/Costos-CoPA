@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="GEAdevel">
+  <meta name="author" content="GEAdevel">
+  <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+  <link rel="shortcut icon" href="{% static 'img/logo.svg' %}">
+  <title>CoPA - {% block title %}{% endblock title %}</title>
+  <!-- Main fonts -->
+  <link href="{% static 'dashboard/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+  <!-- Main styles -->
+  <link href="{% static 'dashboard/css/sb-admin-2.css' %}" rel="stylesheet">
+  <!-- Specific Page CSS -->
+  {% block stylesheets %}{% endblock stylesheets %}
+</head>
+{% block body %}
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    {% include 'includes/sidebar.html' %}
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+        {% include 'includes/topbar.html' %}
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">{% block page-heading %}{% endblock %}</h1>
+            {% block page-heading-buttons %}
+            <!-- Button Group sample
+            <div class="btn-group" role="group" aria-label="Actions">
+              <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                  class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
+            </div>
+            -->
+            {% endblock %}
+          </div>
+          {% block content %}{% endblock content %}
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+      {% include 'includes/footer.html' %}
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+  {% block top-button %}
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+  {% endblock top-button %}
+
+  {% include 'includes/scripts.html' %}
+  <!-- Specific Page JS  -->
+  {% block javascripts %}{% endblock javascripts %}
+</body>
+{% endblock body %}
+
+</html>
