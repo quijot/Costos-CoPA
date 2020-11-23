@@ -24,6 +24,9 @@ class EmpresaFilterMixin:
                 qs = self.model.objects.filter(id=self.request.user.empresa.pk)
             else:
                 qs = self.model.objects.filter(empresa=self.request.user.empresa)
+        elif self.model == models.Profesional:
+            # In case the User has no Empresa yet
+            qs = self.model.objects.filter(id=self.request.user.pk)
         else:
             qs = self.model.objects.none()
         return qs
