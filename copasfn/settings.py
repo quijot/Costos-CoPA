@@ -114,6 +114,7 @@ AUTH_USER_MODEL = "costos.Profesional"
 
 LANGUAGE_CODE = "es-ar"
 TIME_ZONE = "America/Buenos_Aires"
+USE_THOUSAND_SEPARATOR = True
 
 # Applications
 
@@ -125,15 +126,6 @@ APPS_BEFORE = [
 ]
 APPS_AFTER = [
     # other applications
-    # "django.contrib.sites",
-    # "sb_admin_2_auth",
-    # "allauth",
-    # "allauth.account",
-    # "allauth.socialaccount",
-    # # "allauth.socialaccount.providers.facebook",
-    # # "allauth.socialaccount.providers.google",
-    # # "allauth.socialaccount.providers.microsoft",
-    # # "allauth.socialaccount.providers.windowslive",
     "dynamic_preferences",
     # comment the following line if you don't want to use user preferences
     "dynamic_preferences.users.apps.UserPreferencesConfig",
@@ -155,35 +147,10 @@ MIDDLEWARE.insert(sm_index + 1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 TEMPLATES[0]["DIRS"].append(BASE_DIR / "templates")
 
-# # Authentication
-
-# AUTHENTICATION_BACKENDS = [
-#     # Needed to login by username in Django admin, regardless of `allauth`
-#     "django.contrib.auth.backends.ModelBackend",
-#     # `allauth` specific authentication methods, such as login by e-mail
-#     "allauth.account.auth_backends.AuthenticationBackend",
-# ]
-
-# SITE_ID = 1
-
-# # Provider specific settings
-# SOCIALACCOUNT_PROVIDERS = {
-#     "google": {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         "APP": {
-#             "client_id": "123",
-#             "secret": "456",
-#             "key": "",
-#         }
-#     }
-# }
-
 # Deployment
 
 # Heroku
-HEROKUAPP_NAME = os.environ.get("DJANGO_HEROKUAPP_NAME", "my-new-clean-herokuapp")
+HEROKUAPP_NAME = os.environ.get("DJANGO_HEROKUAPP_NAME", "copasfn")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "r+)1xlbz%lau$zpv$mbn#_6cy6rkc-eg!2@0s45jx!2ubuo3m1")
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = [f"{HEROKUAPP_NAME}.herokuapp.com", "127.0.0.1"]
@@ -225,5 +192,19 @@ CONSTANCE_CONFIG = {
 # Dynamic Preferences
 TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
 
-USE_L10N = True
-USE_THOUSAND_SEPARATOR = True
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+        },
+    },
+}
