@@ -7,6 +7,8 @@ from . import views
 router = routers.DefaultRouter()
 
 urlpatterns = (
+    # Inicio
+    path("", views.Home.as_view(), name="index"),
     # REST Framework
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
@@ -18,7 +20,6 @@ urlpatterns = (
     # Profesionales
     path("profesionales/", views.ProfesionalListView.as_view(), name="profesional_list"),
     path("profesional/detail/<int:pk>/", views.ProfesionalDetailView.as_view(), name="profesional_detail"),
-    path("profesional/create/", views.ProfesionalCreateView.as_view(), name="profesional_create"),
     path("profesional/update/<int:pk>/", views.ProfesionalUpdateView.as_view(), name="profesional_update"),
     # Instrumentos
     path("instrumentos/", views.InstrumentoListView.as_view(), name="instrumento_list"),

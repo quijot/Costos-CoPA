@@ -14,6 +14,10 @@ class CounterMixin(object):
         return context
 
 
+class Home(generic.TemplateView):
+    template_name = "index.html"
+
+
 class EmpresaFilterMixin:
     def get_queryset(self):
         """
