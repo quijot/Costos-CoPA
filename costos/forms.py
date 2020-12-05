@@ -162,7 +162,7 @@ class InstrumentoForm(forms.ModelForm):
                                         <strong>Ejemplo</strong>: Estación Total, A=5 (5 años de vida útil),
                                         T=40 (40 trabajos por año), J=1 (1 jornada por trabajo). 5 &times; 40
                                         &times; 1 = 200 jornadas de vida útil.</small>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                                             <span aria-hidden="true">&times;</span>
                                         </button>"""
                                     ),
