@@ -9,19 +9,19 @@
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if object.empresa == user.empresa %}
-<div class="btn-group" role="group" aria-label="Actions">
-  <a href="{{ object.get_delete_url }}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">
+<div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{{ object.get_delete_url }}" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Eliminar</a>
-  <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+  <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
 </div>
 {% endif %}
 {% endblock page-heading-buttons %}
 
 {% block content %}
-<div class="row">
+<div class="row mb-2">
   <!-- Valor -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -40,7 +40,7 @@
     </div>
   </div>
   <!-- KM anual -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-info shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -59,7 +59,7 @@
     </div>
   </div>
   <!-- Combustible -->
-  <!-- <div class="col-xl-2 col-md-4 mb-4">
+  <!-- <div class="col-xl-2 col-md-4 mb-2">
     <div class="card border-left-secondary shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -78,7 +78,7 @@
     </div>
   </div> -->
   <!-- Rendimiento -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-warning shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -97,7 +97,7 @@
     </div>
   </div>
   <!-- Costo por km -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-danger shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -129,43 +129,60 @@
         <div class="table-responsive">
           <table class="table table-sm table-condensed table-hover table-striped">
             <tbody>
-              <th>Tipo Combustible</th>
-              <td>{{ object.tipo_combustible }} / $ {{ object.tipo_combustible.valor_litro }} por litro</td>
-              </tr>
-              <th>Cuota Patente</th>
-              <td>$ {{ object.costo_patente }}</td>
+              <tr>
+                <th>Tipo Combustible</th>
+                <td>{{ object.tipo_combustible }} (por litro/m&sup3;)</td>
+                <td style="text-align: right;">$ {{ object.tipo_combustible.valor_litro }}</td>
               </tr>
               <tr>
-                <th>Seguro (mensual)</th>
-                <td>$ {{ object.costo_seguro }}</td>
+                <th>Cuota Patente</th>
+                <td></td>
+                <td style="text-align: right;">$ {{ object.costo_patente }}</td>
               </tr>
               <tr>
-                <th>Cochera (mensual)</th>
-                <td>$ {{ object.costo_cochera }}</td>
+                <th>Seguro</th>
+                <td>Mensual</td>
+                <td style="text-align: right;">$ {{ object.costo_seguro }}</td>
               </tr>
               <tr>
-                <th>Lubricante (semestral)</th>
-                <td>$ {{ object.costo_lubricante }}</td>
+                <th>Cochera</th>
+                <td>Mensual</td>
+                <td style="text-align: right;">$ {{ object.costo_cochera }}</td>
               </tr>
               <tr>
-                <th>Lavado (mensual)</th>
-                <td>$ {{ object.costo_lavado }}</td>
+                <th>Lubricante</th>
+                <td>Semestral</td>
+                <td style="text-align: right;">$ {{ object.costo_lubricante }}</td>
               </tr>
               <tr>
-                <th>Neumático (cada 40.000 km)</th>
-                <td>$ {{ object.costo_neumatico }}</td>
+                <th>Lavado</th>
+                <td>Mensual</td>
+                <td style="text-align: right;">$ {{ object.costo_lavado }}</td>
               </tr>
               <tr>
-                <th>Service (cada 10.000 km)</th>
-                <td>$ {{ object.costo_service }}</td>
+                <th>Neumático</th>
+                <td>Cada 40.000 km</td>
+                <td style="text-align: right;">$ {{ object.costo_neumatico }}</td>
               </tr>
               <tr>
-                <th>Reparaciones (anual)</th>
-                <td>$ {{ object.costo_anual_reparaciones }}</td>
+                <th>Service</th>
+                <td>Cada 10.000 km</td>
+                <td style="text-align: right;">$ {{ object.costo_service }}</td>
               </tr>
               <tr>
-                <th>Otros repuestos (anual, 2% del valor)</th>
-                <td>$ {{ object.repuestos }}</td>
+                <th>Revisión Técnica Obligatoria</th>
+                <td>Cada 2 años</td>
+                <td style="text-align: right;">$ {{ object.costo_rto }}</td>
+              </tr>
+              <tr>
+                <th>Reparaciones</th>
+                <td>Anual</td>
+                <td style="text-align: right;">$ {{ object.costo_anual_reparaciones }}</td>
+              </tr>
+              <tr>
+                <th>Otros repuestos</th>
+                <td>Anual, 2% del valor</td>
+                <td style="text-align: right;">$ {{ object.repuestos }}</td>
               </tr>
             </tbody>
           </table>

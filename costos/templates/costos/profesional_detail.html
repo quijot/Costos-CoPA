@@ -10,17 +10,17 @@
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if object.pk == user.pk %}
-<div class="btn-group" role="group" aria-label="Actions">
-  <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+<div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
 </div>
 {% endif %}
 {% endblock page-heading-buttons %}
 
 {% block content %}
-<div class="row">
+<div class="row mb-2">
   <!-- Empresa -->
-  <div class="col-xl-8 mb-4">
+  <div class="col-xl-8 col-md-8 mb-2">
     <div class="card border-left-info shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -43,7 +43,7 @@
     </div>
   </div>
   <!-- Costo -->
-  <div class="col-xl-4 mb-4">
+  <div class="col-xl-4 col-md-4 mb-2">
     <div class="card border-left-danger shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -61,12 +61,12 @@
   </div>
 </div>
 <!-- Details -->
-<div class="row">
+<div class="row mb-2">
   <div class="col-lg-8">
-    <div class="card border-left-primary shadow mb-4">
+    <div class="card border-left-primary shadow mb-2">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">
-          Más datos</strong>
+          Datos personales</strong>
         </h6>
       </div>
       <div class="card-body">
@@ -106,15 +106,15 @@
   </div>
   <div class="col-lg-4">
     <!-- Chart -->
-    <div class="card border-left-primary shadow mb-4">
+    <div class="card border-left-primary shadow mb-2">
       <!-- Card Header - Dropdown -->
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Gastos mensuales <span class="text-dark">$
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Gastos mensuales <span class="text-dark float-right">$
             {{ object.gastos_mensuales|localize }}</span></h6>
       </div>
       <!-- Card Body -->
       <div class="card-body">
-        <div class="chart-pie pt-4 pb-2">
+        <div class="chart-pie py-0">
           <div class="chartjs-size-monitor">
             <div class="chartjs-size-monitor-expand">
               <div class=""></div>
@@ -195,29 +195,26 @@
       labels: [{% for g in object.gastos.all %}"{{ g }}", {% endfor %}],
       datasets: [{
         data: [{% for g in object.gastos.all %}{{ g.mensual | safe }}, {% endfor %}],
-          // backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc', '#4e73df', '#1cc88a', '#36b9cc',],
-          backgroundColor: theme_colors,
-          // hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf', '#2e59d9', '#17a673', '#2c9faf',],
-          hoverBackgroundColor: theme.secondary,
-          // hoverBorderColor: "rgba(234, 236, 244, 1)",
-        }],
-      },
-      options: {
-        maintainAspectRatio: false,
-        tooltips: {
-          backgroundColor: "rgb(255,255,255)",
-          bodyFontColor: "#858796",
-          borderColor: '#dddfeb',
-          borderWidth: 1,
-          xPadding: 15,
-          yPadding: 15,
-          displayColors: false,
-          caretPadding: 10,
-        },
-      legend: {
-        // display: false
-      },
-      cutoutPercentage: 10,
+        backgroundColor: theme_colors,
+        hoverBackgroundColor: theme.secondary,
+      }],
+    },
+    options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+    legend: {
+      // display: false
+    },
+    cutoutPercentage: 10,
     },
   });
 </script>

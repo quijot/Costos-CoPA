@@ -9,19 +9,19 @@
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if object.empresa == user.empresa %}
-<div class="btn-group" role="group" aria-label="Actions">
-  <a href="{{ object.get_delete_url }}" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">
+<div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{{ object.get_delete_url }}" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Eliminar</a>
-  <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+  <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
 </div>
 {% endif %}
 {% endblock page-heading-buttons %}
 
 {% block content %}
-<div class="row">
+<div class="row mb-2">
   <!-- Valor USD -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-success shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -40,7 +40,7 @@
     </div>
   </div>
   <!-- Valor ARS -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-primary shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -59,7 +59,7 @@
     </div>
   </div>
   <!-- Vida útil -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-warning shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -78,7 +78,7 @@
     </div>
   </div>
   <!-- Costo por jornada -->
-  <div class="col-xl-3 col-md-6 mb-4">
+  <div class="col-xl-3 col-md-6 mb-2">
     <div class="card border-left-danger shadow h-100 py-2">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
