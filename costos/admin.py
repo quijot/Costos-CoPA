@@ -17,7 +17,6 @@ from .models import (
     Vehiculo,
 )
 
-# admin.site.register(ParametroGlobal)
 admin.site.register(TipoGasto)
 
 
@@ -76,22 +75,19 @@ class InstrumentalInline(admin.TabularInline):
 @admin.register(Combustible)
 class CombustibleAdmin(admin.ModelAdmin):
     list_display = ["combustible", "valor_litro", "modified"]
-    # list_filter = []
-    # search_fields = []
-    # fieldsets = [
-    #     (
-    #         "Algo",
-    #         {
-    #             "fields": [
-    #                 ("field1", "field2"),
-    #                 ("field3", "field4", "field5"),
-    #             ],
-    #             "classes": ["extrapretty"],
-    #         },
-    #     )
-    # ]
-    # search_fields = []
-    # readonly_fields = []
+    readonly_fields = ["created", "modified"]
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": [
+                    ("created", "modified"),
+                    ("combustible", "valor_litro"),
+                ],
+                "classes": ["extrapretty"],
+            },
+        )
+    ]
 
 
 @admin.register(Empresa)
@@ -140,29 +136,11 @@ class ProfesionalAdmin(UserAdmin):
     inlines = [GastoPersonalInline]
 
 
-# Re-register UserAdmin
-# admin.site.unregister(User)
-# admin.site.register(Profesional, UserAdmin)
-
-
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
     list_display = ["nombre", "valor", "kilometraje_anual", "tipo_combustible", "rendimiento", "costo_km"]
-    # list_filter = []
-    # search_fields = []
-    # fieldsets = [
-    #     (
-    #         "Algo",
-    #         {
-    #             "fields": [
-    #                 ("field1", "field2"),
-    #                 ("field3", "field4", "field5"),
-    #             ],
-    #             "classes": ["extrapretty"],
-    #         },
-    #     )
-    # ]
-    # search_fields = []
+    list_filter = ["tipo_combustible"]
+    search_fields = ["nombre"]
     readonly_fields = [
         "combustible",
         "valor_residual",
@@ -184,21 +162,7 @@ class VehiculoAdmin(admin.ModelAdmin):
 @admin.register(Instrumento)
 class InstrumentoAdmin(admin.ModelAdmin):
     list_display = ["nombre", "valor_USD", "valor_ARS", "vida_util", "costo_jornada"]
-    # list_filter = []
-    # search_fields = []
-    # fieldsets = [
-    #     (
-    #         "Algo",
-    #         {
-    #             "fields": [
-    #                 ("field1", "field2"),
-    #                 ("field3", "field4", "field5"),
-    #             ],
-    #             "classes": ["extrapretty"],
-    #         },
-    #     )
-    # ]
-    # search_fields = []
+    search_fields = ["nombre"]
     readonly_fields = [
         "valor_ARS",
         "costo_jornada",
