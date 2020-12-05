@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block stylesheets %}
+<link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+{% endblock stylesheets %}
+{% block title %}Trabajos{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-map"></i>
+Trabajos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}
+{% endblock page-heading %}
+{% block page-heading-buttons %}
+{% if user.empresa %}
+<div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{% url 'trabajo_create' %}" class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+      class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
+</div>
+{% endif %}
+{% endblock page-heading-buttons %}
+
+{% block content %}
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Expediente</th>
+            <th>Comitente</th>
+            <th>Fecha</th>
+            <th>Costo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in object_list %}
+          <tr>
+            <td>
+              <a href="{{ object.get_absolute_url }}">{% if object.expediente %}{{ object.expediente }}{% else %}S/N{% endif %}</a>
+            </td>
+            <td>{{ object.comitente }}</td>
+            <td>{{ object.fecha }}</td>
+            <td>$ {{ object.costo_total }}</td>
+            <td>
+              <a href="{{ object.get_absolute_url }}" class="btn btn-info btn-circle btn-sm" title="Ver">
+                <i class="fas fa-info"></i>
+              </a>
+              <a href="{{ object.get_update_url }}" class="btn btn-primary btn-circle btn-sm" title="Editar">
+                <i class="fas fa-pen"></i>
+              </a>
+              <a href="{{ object.get_delete_url }}" class="btn btn-danger btn-circle btn-sm" title="Eliminar">
+                <i class="fas fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="{% static 'dashboard/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'dashboard/js/dataTables.config.js' %}"></script>
+{% endblock javascripts %}

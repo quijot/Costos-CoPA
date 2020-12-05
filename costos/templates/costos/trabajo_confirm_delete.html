@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Trabajos{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-map"></i>
+Trabajo /
+<span class="text-danger">Eliminando {{ object }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <p class="lead pb-4">
+        ¿Confirma la eliminación de
+        <span class="text-danger">{{ object }}</span>
+        ?
+      </p>
+      <div class="form-group float-right">
+        <a href="{{ view.get_success_url }}" name="cancel" class="btn btn-dark" id="cancel-id-delete">Cancelar</a>
+        <input type="submit" name="delete" value="Eliminar" class="btn btn-danger" id="submit-id-delete">
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

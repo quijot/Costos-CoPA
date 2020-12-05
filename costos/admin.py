@@ -207,29 +207,23 @@ class InstrumentoAdmin(admin.ModelAdmin):
 
 @admin.register(Trabajo)
 class TrabajoAdmin(admin.ModelAdmin):
-    list_display = ["expediente", "fecha", "comitente"]  # , "costo_total"]
-    # list_filter = []
-    # search_fields = []
-    # fieldsets = [
-    #     (
-    #         "Algo",
-    #         {
-    #             "fields": [
-    #                 ("field1", "field2"),
-    #                 ("field3", "field4", "field5"),
-    #             ],
-    #             "classes": ["extrapretty"],
-    #         },
-    #     )
-    # ]
+    list_display = ["expediente", "empresa", "fecha", "comitente", "costo_total"]
+    search_fields = ["expediente", "comitente"]
+    date_hierarchy = "fecha"
     inlines = [ActuantesInline, MovilidadInline, InstrumentalInline]
     readonly_fields = [
-        "empresa",
-        "horas_total",
         "sellado_fiscal",
+        "informe_catastral",
+        "empresa",
+        "cantidad_de_profesionales",
+        "cantidad_de_vehiculos",
+        "cantidad_de_instrumentos",
+        "horas_total",
         "gastos_de_empresa",
-        "costo_de_profesionales",
+        "costo_actuantes",
         "costo_movilidad",
-        "amortizacion_de_instrumentos",
+        "costo_instrumental",
+        "aportes",
+        "gastos_especificos",
         "costo_total",
     ]

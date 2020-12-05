@@ -33,4 +33,10 @@ urlpatterns = (
     path("vehiculo/detail/<int:pk>/", views.VehiculoDetailView.as_view(), name="vehiculo_detail"),
     path("vehiculo/update/<int:pk>/", views.VehiculoUpdateView.as_view(), name="vehiculo_update"),
     path("vehiculo/delete/<int:pk>/", views.VehiculoDeleteView.as_view(), name="vehiculo_delete"),
+    # Trabajos
+    path("trabajos/", views.TrabajoListView.as_view(), name="trabajo_list"),
+    path("trabajo/create/", views.TrabajoCreateView.as_view(), name="trabajo_create"),
+    path("trabajo/detail/<int:pk>/", views.TrabajoDetailView.as_view(), name="trabajo_detail"),
+    path("trabajo/update/<int:pk>/", views.TrabajoUpdateView.as_view(), name="trabajo_update"),
+    path("trabajo/delete/<int:pk>/", views.TrabajoDeleteView.as_view(), name="trabajo_delete"),
 )

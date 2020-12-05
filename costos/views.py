@@ -7,7 +7,7 @@ from django.views import generic  # ListView
 from . import forms, models
 
 
-class CounterMixin(object):
+class CounterMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["count"] = self.get_queryset().count()
@@ -26,6 +26,10 @@ class EmpresaFilterMixin:
         if self.request.user.empresa:
             if self.model == models.Empresa:
                 qs = self.model.objects.filter(id=self.request.user.empresa.pk)
+            elif self.model == models.Trabajo:
+                # Special case for models.Trabajo
+                socios = models.Profesional.objects.filter(empresa=self.request.user.empresa)
+                qs = self.model.objects.filter(profesionales__in=socios).distinct()
             else:
                 qs = self.model.objects.filter(empresa=self.request.user.empresa)
         elif self.model == models.Profesional:
@@ -68,14 +72,61 @@ class ChildrenContextMixin:
         return super().form_valid(form)
 
 
+class TrabajoChildrenContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context["actuantes"] = forms.ActuantesInlineFormSet(self.request.POST, instance=self.object)
+            context["movilidad"] = forms.MovilidadInlineFormSet(self.request.POST, instance=self.object)
+            context["instrumental"] = forms.InstrumentalInlineFormSet(self.request.POST, instance=self.object)
+        else:
+            context["actuantes"] = forms.ActuantesInlineFormSet(instance=self.object)
+            context["movilidad"] = forms.MovilidadInlineFormSet(instance=self.object)
+            context["instrumental"] = forms.InstrumentalInlineFormSet(instance=self.object)
+        # Set choices
+        profesionales_qs = models.Profesional.objects.filter(empresa=self.request.user.empresa)
+        vehiculos_qs = models.Vehiculo.objects.filter(empresa=self.request.user.empresa)
+        instrumentos_qs = models.Instrumento.objects.filter(empresa=self.request.user.empresa)
+        for form in context["actuantes"]:
+            form.fields["profesional"].queryset = profesionales_qs
+        for form in context["movilidad"]:
+            form.fields["vehiculo"].queryset = vehiculos_qs
+        for form in context["instrumental"]:
+            form.fields["instrumento"].queryset = instrumentos_qs
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset_actuantes = context["actuantes"]
+        formset_movilidad = context["movilidad"]
+        formset_instrumental = context["instrumental"]
+        with transaction.atomic():
+            if formset_actuantes.is_valid() and formset_movilidad.is_valid() and formset_instrumental.is_valid():
+                # Save parent only if each formset is valid
+                self.object = form.save()
+                # Set instance and save formset
+                formset_actuantes.instance = self.object
+                formset_actuantes.save()
+                formset_movilidad.instance = self.object
+                formset_movilidad.save()
+                formset_instrumental.instance = self.object
+                formset_instrumental.save()
+            else:
+                return render(self.request, context["view"].get_template_names(), context)
+        return super().form_valid(form)
+
+
 class EmpresaDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DetailView):
     model = models.Empresa
     form_class = forms.EmpresaForm
 
 
-class EmpresaCreateView(mixins.LoginRequiredMixin, generic.CreateView):
+class EmpresaCreateView(ChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView):
     model = models.Empresa
     form_class = forms.EmpresaForm
+    # ChildrenContextMixin params
+    children = "gastos"
+    fs = forms.GastosEmpresaInlineFormSet
 
     def form_valid(self, form):
         """Assign Empresa to the User who has created it."""
@@ -161,3 +212,31 @@ class VehiculoUpdateView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.
 class VehiculoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
     model = models.Vehiculo
     success_url = reverse_lazy("vehiculo_list")
+
+
+class TrabajoListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
+    model = models.Trabajo
+
+
+class TrabajoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DetailView):
+    model = models.Trabajo
+    form_class = forms.TrabajoForm
+
+
+class TrabajoCreateView(
+    EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView
+):
+    model = models.Trabajo
+    form_class = forms.TrabajoForm
+
+
+class TrabajoUpdateView(
+    EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView
+):
+    model = models.Trabajo
+    form_class = forms.TrabajoForm
+
+
+class TrabajoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
+    model = models.Trabajo
+    success_url = reverse_lazy("trabajo_list")

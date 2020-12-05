@@ -4,6 +4,7 @@ from enum import Enum
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 
 
@@ -169,18 +170,39 @@ class Combustible(TimeStampedModel):
 class Vehiculo(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="vehiculos")
     nombre = models.CharField(max_length=30)
-    valor = models.DecimalField(max_digits=10, decimal_places=2, help_text="Valor de reposición en pesos.")
-    kilometraje_anual = models.PositiveIntegerField()
+    valor = models.DecimalField(max_digits=10, decimal_places=2, help_text="Valor de reposición actualizado en pesos.")
+    kilometraje_anual = models.PositiveIntegerField(default=20000, help_text="KM estimados para un año.")
     tipo_combustible = models.ForeignKey(Combustible, on_delete=models.CASCADE)
-    rendimiento = models.PositiveSmallIntegerField("rendimiento [km/l]", default=9)
-    costo_patente = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_seguro = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_cochera = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_lubricante = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_lavado = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_neumatico = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_service = models.DecimalField(max_digits=8, decimal_places=2)
-    costo_anual_reparaciones = models.DecimalField(max_digits=8, decimal_places=2)
+    rendimiento = models.PositiveSmallIntegerField(
+        "rendimiento [km/l]", default=9, help_text="Rendimiento promedio en km por litro."
+    )
+    costo_patente = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo de cada cuota de la patente."
+    )
+    costo_seguro = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo mensual del seguro."
+    )
+    costo_cochera = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo mensual de cochera / garage."
+    )
+    costo_lubricante = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo del lubricante (calcula cada 6 meses)."
+    )
+    costo_lavado = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Gastos mensuales en lavado."
+    )
+    costo_neumatico = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo de 1 neumático (calcula cada 40.000 km)."
+    )
+    costo_service = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Costo de Service general (calcula cada 10.000 km)."
+    )
+    costo_anual_reparaciones = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Estimado de reparaciones por año."
+    )
+    costo_rto = models.DecimalField(
+        "RTO", max_digits=8, decimal_places=2, default=0, help_text="Costo de Revisión Técnica Obligatoria."
+    )
 
     class Meta:
         ordering = ["nombre", "valor"]
@@ -260,6 +282,10 @@ class Vehiculo(models.Model):
         return round(self.costo_lubricante * 2 / self.kilometraje_anual, 2) if self.costo_lubricante else 0
 
     @property
+    def rto(self):
+        return round(self.costo_rto / (2 * self.kilometraje_anual), 2) if self.costo_rto else 0
+
+    @property
     def costo_km(self):
         return round(
             self.amortizacion_valor
@@ -272,7 +298,8 @@ class Vehiculo(models.Model):
             + self.reparaciones
             + self.repuestos_por_km
             + self.amortizacion_neumaticos
-            + self.service,
+            + self.service
+            + self.rto,
             2,
         )
 
@@ -280,9 +307,15 @@ class Vehiculo(models.Model):
 class Instrumento(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="instrumentos")
     nombre = models.CharField(max_length=30)
-    valor_USD = models.DecimalField(max_digits=8, decimal_places=2, help_text="Cotización dólar según Banco Nación.")
+    valor_USD = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        help_text="Valor de reposición en dólares. Cotización dólar oficial según Banco Nación.",
+    )
     vida_util = models.PositiveIntegerField(
-        "vida útil", default=200, help_text="Vida útil esperada en jornadas de medición/gabinete."
+        "vida útil",
+        default=200,
+        help_text="Vida útil esperada en jornadas de trabajo y/o gabinete.",
     )
 
     class Meta:
@@ -386,39 +419,123 @@ class GastoPersonal(Gasto):
 
 
 class Trabajo(models.Model):
-    fecha = models.DateField()
-    expediente = models.PositiveIntegerField(blank=True, null=True)
+    fecha = models.DateField(default=timezone.now, help_text="Fecha de cálculo de costos.")
+    expediente = models.PositiveIntegerField(blank=True, null=True, help_text="Expediente CoPA relacionado.")
     comitente = models.CharField(max_length=50, blank=True)
     profesionales = models.ManyToManyField(Profesional, through="Actuantes")
-    vehiculos = models.ManyToManyField(Vehiculo, through="Movilidad")
-    instrumentos = models.ManyToManyField(Instrumento, through="Instrumental")
-    aporte_copa = models.DecimalField(max_digits=10, decimal_places=2, default=2200)
-    aporte_caja = models.DecimalField(max_digits=10, decimal_places=2, default=2890)
-    partidas = models.PositiveSmallIntegerField(blank=True, default=1)
-    lotes_finales = models.PositiveSmallIntegerField(blank=True, default=1)
-    escrituras = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=1)
-    visado_municipio = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    ccu = models.DecimalField("certificado catastral urgente", max_digits=8, decimal_places=2, blank=True, default=0)
-    estudio_titulos = models.DecimalField("estudio de títulos", max_digits=8, decimal_places=2, blank=True, default=0)
-    georreferenciacion = models.DecimalField(
-        "georreferenciación", max_digits=8, decimal_places=2, blank=True, default=0
+    vehiculos = models.ManyToManyField(Vehiculo, through="Movilidad", blank=True)
+    instrumentos = models.ManyToManyField(Instrumento, through="Instrumental", blank=True)
+    aporte_copa = models.DecimalField(
+        "aportes CoPA", max_digits=10, decimal_places=2, default=2200, help_text="Calculados según Sistema."
     )
-    citaciones = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    ayudante = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    dibujante = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    impresiones = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    mojones = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    gestor = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    seguros_especiales = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
-    alquiler_instrumentos = models.DecimalField(max_digits=8, decimal_places=2, blank=True, default=0)
+    aporte_caja = models.DecimalField(
+        "aportes Caja", max_digits=10, decimal_places=2, default=2890, help_text="Calculados según Sistema."
+    )
+    partidas = models.PositiveSmallIntegerField(
+        default=1, help_text="Para cálculo de Sellados Fiscales e Informes Catastrales."
+    )
+    lotes_finales = models.PositiveSmallIntegerField(default=1, help_text="Para cálculo de Sellados Fiscales.")
+    escrituras = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Gastos por pedidos de escrituras al RGP."
+    )
+    visados = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Visados en reparticiones públicas."
+    )
+    ccu = models.DecimalField(
+        "Certificado Catastral Urgente",
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="Sellados por CCU.",
+    )
+    estudio_titulos = models.DecimalField(
+        "estudio de títulos",
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="Gastos extra por Estudio de Títulos.",
+    )
+    georreferenciacion = models.DecimalField(
+        "georreferenciación",
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="Gastos extra por Georreferenciación.",
+    )
+    citaciones = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Estampillados por notificaciones."
+    )
+    viaticos = models.DecimalField(
+        "viáticos", max_digits=8, decimal_places=2, default=0, help_text="Alojamiento y comidas."
+    )
+    ayudante = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Horas / jornales de ayudante/s."
+    )
+    dibujante = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Horas / jornales de dibujante/s."
+    )
+    impresiones = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Ploteos o impresiones de documentación."
+    )
+    mojones = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Hierros, estacas, pintura, cintas peligro..."
+    )
+    gestor = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Gestores, comisionistas, fletes."
+    )
+    seguros_especiales = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Seguros ocasionales o especiales para este trabajo."
+    )
+    alquiler_instrumentos = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="Alquileres de instrumentos ocasionales para este trabajo.",
+    )
+    otros_gastos = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0, help_text="Otros gastos sin categorizar."
+    )
 
     class Meta:
         ordering = ["-fecha"]
 
     def __str__(self):
-        return f"{self.expediente}"
+        return f"{self.expediente}" if self.expediente else "S/N"
 
     trabajo = property(__str__)
+
+    def get_absolute_url(self):
+        return reverse("trabajo_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("trabajo_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("trabajo_delete", kwargs={"pk": self.pk})
+
+    @property
+    def empresa(self):
+        return self.profesionales.first().empresa if self.profesionales.last() else None
+
+    @property
+    def cantidad_de_profesionales(self):
+        return self.profesionales.count()
+
+    @property
+    def cantidad_de_instrumentos(self):
+        return self.instrumental.count()
+
+    @property
+    def cantidad_de_vehiculos(self):
+        return self.movilidad.count()
+
+    @property
+    def horas_total(self):
+        return sum([p.horas for p in self.actuantes.all()])
+
+    @property
+    def aportes(self):
+        return self.aporte_copa + self.aporte_caja
 
     @property
     def sellado_fiscal(self):
@@ -435,61 +552,102 @@ class Trabajo(models.Model):
             return 0
 
     @property
-    def empresa(self):
-        return self.actuantes.first().profesional.empresa
-
-    @property
-    def horas_total(self):
-        return sum([p.horas for p in self.actuantes.all()])
+    def informe_catastral(self):
+        GLOBAL = ParametroGlobal.objects.last() or False
+        MT = GLOBAL.modulo_tributario if GLOBAL else 0
+        INFORME_CATASTRAL = 400 * MT
+        return INFORME_CATASTRAL * self.partidas
 
     @property
     def gastos_de_empresa(self):
-        return self.horas_total * self.empresa.gastos_por_hora
+        if self.empresa:
+            return self.horas_total * self.empresa.gastos_por_hora
+        else:
+            return 0
 
     @property
-    def costo_de_profesionales(self):
-        # return sum([f.horas * f.profesional.costo_por_hora for f in self.actuantes.all()])
+    def costo_actuantes(self):
+        return sum([f.horas * f.profesional.costo_por_hora for f in self.actuantes.all()])
         return 0
 
     @property
     def costo_movilidad(self):
-        return sum([m.km * m.vehiculo.costo_km for m in self.movilidad_set.all()])
+        return sum([m.km * m.vehiculo.costo_km for m in self.movilidad.all()])
 
     @property
-    def amortizacion_de_instrumentos(self):
-        return sum([i.jornadas * i.instrumento.costo_jornada for i in self.instrumental_set.all()])
+    def cantidad_de_km(self):
+        return sum([m.km for m in self.movilidad.all()])
+
+    @property
+    def costo_instrumental(self):
+        return sum([i.jornadas * i.instrumento.costo_jornada for i in self.instrumental.all()])
+
+    @property
+    def cantidad_de_jornadas(self):
+        return sum([i.jornadas for i in self.instrumental.all()])
+
+    @property
+    def gastos_especificos(self):
+        return (
+            self.escrituras
+            + self.visados
+            + self.ccu
+            + self.estudio_titulos
+            + self.georreferenciacion
+            + self.citaciones
+            + self.viaticos
+            + self.ayudante
+            + self.dibujante
+            + self.impresiones
+            + self.mojones
+            + self.gestor
+            + self.seguros_especiales
+            + self.alquiler_instrumentos
+            + self.otros_gastos
+            + self.sellado_fiscal
+            + self.informe_catastral
+        )
 
     @property
     def costo_total(self):
         return (
-            (self.aporte_copa or 0)
-            + (self.aporte_caja or 0)
-            + (self.escrituras or 0)
-            + (self.visado_municipio or 0)
-            + (self.ccu or 0)
-            + (self.estudio_titulos or 0)
-            + (self.georreferenciacion or 0)
-            + (self.citaciones or 0)
-            + (self.ayudante or 0)
-            + (self.dibujante or 0)
-            + (self.impresiones or 0)
-            + (self.mojones or 0)
-            + (self.gestor or 0)
-            + (self.seguros_especiales or 0)
-            + (self.alquiler_instrumentos or 0)
-            + (self.gastos_de_empresa or 0)
-            + (self.costo_de_profesionales or 0)
-            + (self.costo_movilidad or 0)
-            + (self.amortizacion_de_instrumentos or 0)
+            self.aportes
+            + self.gastos_especificos
+            + self.gastos_de_empresa
+            + self.costo_actuantes
+            + self.costo_movilidad
+            + self.costo_instrumental
         )
+
+    @property
+    def proporcion_empresa(self):
+        return round(self.gastos_de_empresa / self.costo_total * 100, 1)
+
+    @property
+    def proporcion_actuantes(self):
+        return round(self.costo_actuantes / self.costo_total * 100, 1)
+
+    @property
+    def proporcion_movilidad(self):
+        return round(self.costo_movilidad / self.costo_total * 100, 1)
+
+    @property
+    def proporcion_instrumental(self):
+        return round(self.costo_instrumental / self.costo_total * 100, 1)
+
+    @property
+    def proporcion_aportes(self):
+        return round(self.aportes / self.costo_total * 100, 1)
+
+    @property
+    def proporcion_especificos(self):
+        return round(self.gastos_especificos / self.costo_total * 100, 1)
 
 
 class Actuantes(models.Model):
     trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="actuantes")
-    profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name="actuantes")
-    horas = models.PositiveSmallIntegerField(
-        default=10, help_text="Horas de medición, gabinete, gestiones y trámites."
-    )
+    profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name="actuante")
+    horas = models.PositiveSmallIntegerField(default=10, help_text="Medición, gabinete, gestiones y trámites.")
 
     class Meta:
         ordering = ["-horas", "profesional"]
@@ -499,8 +657,8 @@ class Actuantes(models.Model):
 
 
 class Movilidad(models.Model):
-    trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE)
-    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE)
+    trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="movilidad")
+    vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, related_name="trabajos")
     km = models.PositiveSmallIntegerField(default=70, help_text="Kilomtraje estimado.")
 
     class Meta:
@@ -511,8 +669,8 @@ class Movilidad(models.Model):
 
 
 class Instrumental(models.Model):
-    trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE)
-    instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
+    trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="instrumental")
+    instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE, related_name="trabajos")
     jornadas = models.PositiveSmallIntegerField(default=1, help_text="Jornadas de utilización.")
 
     class Meta:
