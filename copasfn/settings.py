@@ -120,15 +120,15 @@ USE_THOUSAND_SEPARATOR = True
 
 APPS_BEFORE = [
     # my applications
-    "constance",
-    "constance.backends.database",
+    # "constance",
+    # "constance.backends.database",
     "costos.apps.CostosConfig",
 ]
 APPS_AFTER = [
-    # other applications
-    "dynamic_preferences",
-    # comment the following line if you don't want to use user preferences
-    "dynamic_preferences.users.apps.UserPreferencesConfig",
+    # # other applications
+    # "dynamic_preferences",
+    # # comment the following line if you don't want to use user preferences
+    # "dynamic_preferences.users.apps.UserPreferencesConfig",
     "rest_framework",
     "django_extensions",
     "crispy_forms",
@@ -158,7 +158,18 @@ ALLOWED_HOSTS = [f"{HEROKUAPP_NAME}.herokuapp.com", "127.0.0.1"]
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = "/"
 
+# Mail sending / default value is smtp
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# # SendGrid
+# SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+# EMAIL_HOST = "smtp.sendgrid.net"
+# EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
+# EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = "no-reply@actadigital.com.ar"
 
 # Heroku: Update DATABASE configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -181,16 +192,16 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-# Constance
-CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+# # Constance
+# CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
-CONSTANCE_CONFIG = {
-    "THE_ANSWER": (42, "Answer to the Ultimate Question of Life, The Universe, and Everything"),
-    "DOLAR": (decimal.Decimal(85.25), "Cotización del dólar."),
-}
+# CONSTANCE_CONFIG = {
+#     "THE_ANSWER": (42, "Answer to the Ultimate Question of Life, The Universe, and Everything"),
+#     "DOLAR": (decimal.Decimal(85.25), "Cotización del dólar."),
+# }
 
-# Dynamic Preferences
-TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
+# # Dynamic Preferences
+# TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
 
 # Logging
 LOGGING = {
