@@ -11,14 +11,29 @@ Instrumentos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if user.empresa %}
-<div class="btn-group" role="group" aria-label="Actions">
-  <a href="{% url 'instrumento_create' %}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+<div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{% url 'instrumento_create' %}" class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
       class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
 </div>
 {% endif %}
 {% endblock page-heading-buttons %}
 
 {% block content %}
+<div class="row">
+  <div class="col">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      Listado de instrumentos pertenecientes a <strong>{{ user.empresa }}</strong>.
+      Se recomienda cargar todos los instrumentos que se utilizan y son suceptibles
+      de amortización. <strong>Estación Total, Nivel, trípode, regla, receptor GNSS,
+      bastones, drone, PC, notebook, disto, cintas</strong>, etc. y todo el capital
+      que representa el conjunto de instrumentos que día a día se ponen en uso para
+      realizar cada trabajo.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+</div>
 <div class="card shadow mb-4">
   <div class="card-body">
     <div class="table-responsive">

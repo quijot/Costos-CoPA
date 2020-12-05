@@ -11,6 +11,17 @@ Profesionales {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endi
 {% endblock page-heading %}
 
 {% block content %}
+<div class="row">
+  <div class="col">
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      Listado de profesionales que trabajan en <strong>{{ user.empresa }}</strong>. Para agregar a un/a nuevo/a
+      profesional, por favor contactarnos a través de ...
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+</div>
 <div class="card shadow mb-4">
   <div class="card-body">
     <div class="table-responsive">
