@@ -8,5 +8,6 @@ pydot
 django-crispy-forms
 djangorestframework
 django-q
+requests
 #django-constance[database]
 #django-dynamic-preferences
