@@ -131,6 +131,7 @@ APPS_AFTER = [
     "rest_framework",
     "django_extensions",
     "crispy_forms",
+    "django_q",
 ]
 # Apps installed before have priority, for example, with templates with the same name,
 # typically convenient when your app overrides login/logout templates
@@ -201,6 +202,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # # Dynamic Preferences
 # TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
+
+# Django Q: Configure your Q cluster
+# More details https://django-q.readthedocs.io/en/latest/configure.html
+Q_CLUSTER = {
+    "name": "valores",
+    "orm": "default",  # Use Django's ORM + database for broker
+}
 
 # Logging
 LOGGING = {

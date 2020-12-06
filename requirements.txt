@@ -7,5 +7,6 @@ django-extensions
 pydot
 django-crispy-forms
 djangorestframework
+django-q
 #django-constance[database]
 #django-dynamic-preferences
