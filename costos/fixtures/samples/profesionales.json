@@ -1,0 +1,86 @@
+[
+    {
+        "model": "costos.profesional",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$0vCZGpH3wDrZ$9FK3iD0ugCdskkq0lt4Eq4p/L8UIWNu+y7EG0aGpQoE=",
+            "last_login": "2020-12-05T16:14:13.574Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "Administrador",
+            "last_name": "Pestarini",
+            "email": "santiago@pestarini.com.ar",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2020-11-21T21:38:43Z",
+            "empresa": 1,
+            "matricula": "1-9999",
+            "cuit": "23-29339212-9",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "costos.profesional",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$M2EbGUjLzjya$xpzbELTd6YREn3+XUxSsjQiMPTnO6o8brcXdCx7f/6I=",
+            "last_login": "2020-11-28T20:37:52.215Z",
+            "is_superuser": false,
+            "username": "fer",
+            "first_name": "Fernando",
+            "last_name": "Milesi",
+            "email": "fermilesi@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2020-11-23T21:36:46Z",
+            "empresa": 2,
+            "matricula": "8-8888",
+            "cuit": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "costos.profesional",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$htq1C3CkwfhU$hiLdwL2U6JRhsOOaKrkQ2IZ05p/MSRaM0yKC3j5MrbM=",
+            "last_login": "2020-12-05T15:33:42.991Z",
+            "is_superuser": false,
+            "username": "santipesta",
+            "first_name": "Santiago",
+            "last_name": "Pestarini",
+            "email": "santiagonob@gmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2020-11-24T03:35:15.125Z",
+            "empresa": 2,
+            "matricula": "1-0253",
+            "cuit": "23-29339212-9",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "costos.profesional",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$9TKJSZEoLDTW$nx/u/4OZaTVOeIWJvu6lcGdipLT8LBCQ90JYgvvsLtA=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "33123897",
+            "first_name": "Wilfredo",
+            "last_name": "Pozzi",
+            "email": "wilfredopozzi@hotmail.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2020-12-07T02:36:12Z",
+            "empresa": null,
+            "matricula": null,
+            "cuit": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
