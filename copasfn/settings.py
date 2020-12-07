@@ -208,7 +208,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 Q_CLUSTER = {
     "name": "valores",
     "orm": "default",  # Use Django's ORM + database for broker
-    "workers": 2,
 }
 
 # Logging
