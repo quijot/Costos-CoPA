@@ -1,3 +1,3 @@
-release: bin/start-pgbouncer python manage.py migrate
+release: python manage.py migrate
 worker: python manage.py qcluster
-web: gunicorn copasfn.wsgi --log-file -
+web: bin/start-pgbouncer gunicorn copasfn.wsgi --log-file -

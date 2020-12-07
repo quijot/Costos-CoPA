@@ -209,6 +209,8 @@ Q_CLUSTER = {
     "name": "valores",
     "orm": "default",  # Use Django's ORM + database for broker
 }
+# PGBouncer
+DISABLE_SERVER_SIDE_CURSORS = True  # required when using pgbouncer's pool_mode=transaction
 
 # Logging
 LOGGING = {
