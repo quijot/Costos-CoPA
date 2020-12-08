@@ -124,10 +124,10 @@ APPS_BEFORE = [
     "costos.apps.CostosConfig",
 ]
 APPS_AFTER = [
-    # # other applications
-    # "dynamic_preferences",
-    # # comment the following line if you don't want to use user preferences
-    # "dynamic_preferences.users.apps.UserPreferencesConfig",
+    # other applications
+    "dynamic_preferences",
+    # comment the following line if you don't want to use user preferences
+    "dynamic_preferences.users.apps.UserPreferencesConfig",
     "rest_framework",
     "django_extensions",
     "crispy_forms",
@@ -199,8 +199,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 #     "DOLAR": (decimal.Decimal(85.25), "Cotización del dólar."),
 # }
 
-# # Dynamic Preferences
-# TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
+# Dynamic Preferences
+TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
 
 # Logging
 LOGGING = {

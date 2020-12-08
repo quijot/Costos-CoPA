@@ -3,7 +3,6 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import (
     Actuantes,
-    Combustible,
     Empresa,
     GastoEmpresa,
     GastoPersonal,
@@ -70,24 +69,6 @@ class InstrumentalInline(admin.TabularInline):
     model = Instrumental
     extra = 0
     verbose_name_plural = "instrumental"
-
-
-@admin.register(Combustible)
-class CombustibleAdmin(admin.ModelAdmin):
-    list_display = ["combustible", "valor_litro", "modified"]
-    readonly_fields = ["created", "modified"]
-    fieldsets = [
-        (
-            None,
-            {
-                "fields": [
-                    ("created", "modified"),
-                    ("combustible", "valor_litro"),
-                ],
-                "classes": ["extrapretty"],
-            },
-        )
-    ]
 
 
 @admin.register(Empresa)

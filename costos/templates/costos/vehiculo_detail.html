@@ -131,8 +131,8 @@
             <tbody>
               <tr>
                 <th>Tipo Combustible</th>
-                <td>{{ object.tipo_combustible }} (por litro/m&sup3;)</td>
-                <td style="text-align: right;">$ {{ object.tipo_combustible.valor_litro }}</td>
+                <td>{{ object.get_tipo_combustible_display }} (por litro/m&sup3;)</td>
+                <td style="text-align: right;">$ {{ object.combustible_valor }}</td>
               </tr>
               <tr>
                 <th>Cuota Patente</th>

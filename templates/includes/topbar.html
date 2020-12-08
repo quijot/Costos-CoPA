@@ -1,4 +1,3 @@
-{% load costos_tags %}
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
   <!-- Sidebar Toggle (Topbar) -->
@@ -8,10 +7,10 @@
   <!-- Topbar Navbar -->
   <ul class="navbar-nav ml-auto">
     <!-- Nav Item - Global Preferences -->
-    <li class="nav-item dropdown no-arrow mx-1" title="Cotización del dólar BNA para {% get_fecha %}">
+    <li class="nav-item dropdown no-arrow mx-1" title="Cotización del dólar BNA">
       <a class="nav-link" href="https://bna.com.ar/" id="BNAlink" role="button" aria-expanded="false">
         <i class="fas fa-money-bill-alt fa-fw text-success"></i>
-        <span class="d-none d-lg-inline ml-2 text-gray-600 small">$ {% get_cotizacion_dolar %}</span>
+        <span class="d-none d-lg-inline ml-2 text-gray-600 small">$ {{ global_preferences.cotizacion_dolar }}</span>
         <!-- Counter - Messages -->
         <!-- <span class="badge badge-danger badge-counter">7</span> -->
       </a>

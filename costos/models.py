@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django_extensions.db.models import TimeStampedModel
 
+from .dynamic_preferences_registry import get_cotizacion_dolar, get_modulo_tributario, get_valor_litro
+
 
 class Periodo(Enum):
     DIA = 1
@@ -75,7 +77,7 @@ class Empresa(models.Model):
     @property
     def gastos_semanales(self):
         """Gastos por semana de trabajo en la Oficina de la Empresa."""
-        return round(sum([gasto.semanal for gasto in self.gastos.all()]), 2)
+        return round(decimal.Decimal(sum([gasto.semanal for gasto in self.gastos.all()])), 2)
 
     @property
     def gastos_por_hora(self):
@@ -85,12 +87,12 @@ class Empresa(models.Model):
     @property
     def gastos_mensuales(self):
         """Gastos por mes de trabajo en la Oficina de la Empresa."""
-        return round(sum([gasto.mensual for gasto in self.gastos.all()]), 2)
+        return round(decimal.Decimal(sum([gasto.mensual for gasto in self.gastos.all()])), 2)
 
     @property
     def gastos_anuales(self):
         """Gastos por año de trabajo en la Oficina de la Empresa."""
-        return round(sum([gasto.anual for gasto in self.gastos.all()]), 2)
+        return round(decimal.Decimal(sum([gasto.anual for gasto in self.gastos.all()])), 2)
 
 
 class Profesional(AbstractUser):
@@ -149,7 +151,11 @@ class Profesional(AbstractUser):
         return round(sum([gasto.anual for gasto in self.gastos.all()]), 2)
 
 
-class Combustible(TimeStampedModel):
+class Vehiculo(models.Model):
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="vehiculos")
+    nombre = models.CharField(max_length=30)
+    valor = models.DecimalField(max_digits=10, decimal_places=2, help_text="Valor de reposición actualizado en pesos.")
+    kilometraje_anual = models.PositiveIntegerField(default=20000, help_text="KM estimados para un año.")
     TIPO_COMBUSTIBLE = (
         ("n", "Nafta"),
         ("p", "Nafta Premium"),
@@ -157,22 +163,7 @@ class Combustible(TimeStampedModel):
         ("l", "Diesel Premium"),
         ("g", "GNC"),
     )
-    combustible = models.CharField(max_length=1, choices=TIPO_COMBUSTIBLE, default="n")
-    valor_litro = models.DecimalField(max_digits=6, decimal_places=2)
-
-    class Meta:
-        ordering = ["combustible"]
-
-    def __str__(self):
-        return self.get_combustible_display()
-
-
-class Vehiculo(models.Model):
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="vehiculos")
-    nombre = models.CharField(max_length=30)
-    valor = models.DecimalField(max_digits=10, decimal_places=2, help_text="Valor de reposición actualizado en pesos.")
-    kilometraje_anual = models.PositiveIntegerField(default=20000, help_text="KM estimados para un año.")
-    tipo_combustible = models.ForeignKey(Combustible, on_delete=models.CASCADE)
+    tipo_combustible = models.CharField(max_length=1, choices=TIPO_COMBUSTIBLE, default="n")
     rendimiento = models.PositiveSmallIntegerField(
         "rendimiento [km/l]", default=9, help_text="Rendimiento promedio en km por litro."
     )
@@ -222,8 +213,12 @@ class Vehiculo(models.Model):
         return reverse("vehiculo_delete", kwargs={"pk": self.pk})
 
     @property
+    def combustible_valor(self):
+        return get_valor_litro(self.get_tipo_combustible_display())
+
+    @property
     def combustible(self):
-        return self.tipo_combustible.valor_litro / self.rendimiento
+        return self.combustible_valor / self.rendimiento
 
     @property
     def valor_residual(self):
@@ -335,8 +330,7 @@ class Instrumento(models.Model):
 
     @property
     def valor_ARS(self):
-        GLOBAL = ParametroGlobal.objects.last() or False
-        DOLAR = GLOBAL.cotizacion_dolar if GLOBAL else 0
+        DOLAR = get_cotizacion_dolar()
         return round(self.valor_USD * DOLAR, 2) if self.pk else 0
 
     valor_ARS.fget.short_description = "valor ARS"
@@ -540,8 +534,7 @@ class Trabajo(models.Model):
     @property
     def sellado_fiscal(self):
         if self.partidas and self.lotes_finales:
-            GLOBAL = ParametroGlobal.objects.last() or False
-            MT = GLOBAL.modulo_tributario if GLOBAL else 0
+            MT = get_modulo_tributario()
             _91011 = 6 * 2 * MT
             _91066 = 300 * MT
             _95013 = 300 * MT
@@ -553,8 +546,7 @@ class Trabajo(models.Model):
 
     @property
     def informe_catastral(self):
-        GLOBAL = ParametroGlobal.objects.last() or False
-        MT = GLOBAL.modulo_tributario if GLOBAL else 0
+        MT = get_modulo_tributario()
         INFORME_CATASTRAL = 400 * MT
         return INFORME_CATASTRAL * self.partidas
 
@@ -567,12 +559,11 @@ class Trabajo(models.Model):
 
     @property
     def costo_actuantes(self):
-        return sum([f.horas * f.profesional.costo_por_hora for f in self.actuantes.all()])
-        return 0
+        return round(decimal.Decimal(sum([f.horas * f.profesional.costo_por_hora for f in self.actuantes.all()])), 2)
 
     @property
     def costo_movilidad(self):
-        return sum([m.km * m.vehiculo.costo_km for m in self.movilidad.all()])
+        return round(decimal.Decimal(sum([m.km * m.vehiculo.costo_km for m in self.movilidad.all()])), 2)
 
     @property
     def cantidad_de_km(self):
@@ -580,7 +571,9 @@ class Trabajo(models.Model):
 
     @property
     def costo_instrumental(self):
-        return sum([i.jornadas * i.instrumento.costo_jornada for i in self.instrumental.all()])
+        return round(
+            decimal.Decimal(sum([i.jornadas * i.instrumento.costo_jornada for i in self.instrumental.all()])), 2
+        )
 
     @property
     def cantidad_de_jornadas(self):
