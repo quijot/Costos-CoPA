@@ -65,9 +65,9 @@
         <div class="row no-gutters align-items-center">
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-              {{ object.tipo_combustible }} $/lt</div>
+              {{ object.get_tipo_combustible_display }} $/lt</div>
             <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ object.tipo_combustible.valor_litro }}
+              {{ object.combustible_valor }}
             </div>
           </div>
           <div class="col-auto">

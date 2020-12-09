@@ -55,7 +55,7 @@ Vehículos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %
             </td>
             <td>$ {{ object.valor }}</td>
             <td>{{ object.kilometraje_anual }}</td>
-            <td>{{ object.tipo_combustible }}</td>
+            <td>{{ object.get_tipo_combustible_display }}</td>
             <td>{{ object.rendimiento }}</td>
             <td>$ {{ object.costo_km }}</td>
             <td>
