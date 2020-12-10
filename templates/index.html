@@ -5,7 +5,7 @@
 {% block content %}
 <div class="jumbotron">
   <h1 class="display-3">{% ifequal user.first_name|default:""|slice:"-1:" "a" %}¡Bienvenida!{% else %}¡Bienvenido!{% endifequal %}</h1>
-  <p class="lead">En el panel lateral se encuentran los accesos para cada módulos. Arriba a la derecha, su perfil de usuario.</p>
+  <p class="lead">En el panel lateral se encuentran los accesos para cada módulo. Arriba a la derecha, su perfil de usuario.</p>
   <hr class="my-4">
   <!-- <p>Para mayor información, puede consultar la documentación oficial y los tutoriales de cada módulo del sistema.</p>
   <p class="lead">
