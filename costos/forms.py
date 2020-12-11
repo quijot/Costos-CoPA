@@ -91,9 +91,14 @@ class ProfesionalForm(UserChangeForm):
                     Fieldset(
                         "Gastos",
                         HTML(
-                            """<div><p>Cargar todos los gastos asociados únicamente a este profesional.
-                            Ejemplo: Matrícula, Monotributo, Jubilación, Obra Social, Cursos de capacitación, etc.
-                            NO se cargan aquí los gastos asociados a la Empresa / Oficina.</p></div>"""
+                            """<div class="alert alert-info alert-dismissible fade show" role="alert">
+                            Cargar todos los gastos asociados únicamente a este profesional. Ejemplo:
+                            Matrícula, Monotributo, Jubilación, Obra Social, Cursos de capacitación, etc.
+                            NO se cargan aquí los gastos asociados a la Empresa / Oficina.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>"""
                         ),
                         Formset("gastos"),
                     ),
