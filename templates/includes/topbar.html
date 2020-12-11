@@ -10,7 +10,7 @@
     <li class="nav-item dropdown no-arrow mx-1" title="Cotización del dólar BNA">
       <a class="nav-link" href="https://bna.com.ar/" id="BNAlink" role="button" aria-expanded="false">
         <i class="fas fa-money-bill-alt fa-fw text-success"></i>
-        <span class="d-none d-lg-inline ml-2 text-gray-600 small">$ {{ global_preferences.cotizacion_dolar }}</span>
+        <span class="ml-2 text-gray-600 small">$ {{ global_preferences.cotizacion_dolar|floatformat:2 }}</span>
         <!-- Counter - Messages -->
         <!-- <span class="badge badge-danger badge-counter">7</span> -->
       </a>
