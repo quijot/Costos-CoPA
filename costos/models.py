@@ -420,27 +420,27 @@ class Trabajo(models.Model):
     vehiculos = models.ManyToManyField(Vehiculo, through="Movilidad", blank=True)
     instrumentos = models.ManyToManyField(Instrumento, through="Instrumental", blank=True)
     aporte_copa = models.DecimalField(
-        "aportes CoPA", max_digits=10, decimal_places=2, default=2200, help_text="Calculados según Sistema."
+        "aportes CoPA", max_digits=10, decimal_places=2, default=2200, help_text="Monto calculado según Sistema."
     )
     aporte_caja = models.DecimalField(
-        "aportes Caja", max_digits=10, decimal_places=2, default=2890, help_text="Calculados según Sistema."
+        "aportes Caja", max_digits=10, decimal_places=2, default=2890, help_text="Monto calculado según Sistema."
     )
     partidas = models.PositiveSmallIntegerField(
-        default=1, help_text="Para cálculo de Sellados Fiscales e Informes Catastrales."
+        "cantidad de partidas", default=1, help_text="Para cálculo de Sellados Fiscales e Informes Catastrales."
     )
     lotes_finales = models.PositiveSmallIntegerField(default=1, help_text="Para cálculo de Sellados Fiscales.")
     escrituras = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Gastos por pedidos de escrituras al RGP."
+        "monto por escrituras", max_digits=8, decimal_places=2, default=0, help_text="Gasto por pedidos al RGP."
     )
     visados = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Visados en reparticiones públicas."
+        "monto por visados", max_digits=8, decimal_places=2, default=0, help_text="Gastos en reparticiones públicas."
     )
     ccu = models.DecimalField(
         "Certificado Catastral Urgente",
         max_digits=8,
         decimal_places=2,
         default=0,
-        help_text="Sellados por CCU.",
+        help_text="Pago de sellados por CCU.",
     )
     estudio_titulos = models.DecimalField(
         "estudio de títulos",
@@ -457,34 +457,32 @@ class Trabajo(models.Model):
         help_text="Gastos extra por Georreferenciación.",
     )
     citaciones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Estampillados por notificaciones."
+        max_digits=8, decimal_places=2, default=0, help_text="Pago de envío / estampillados por notificaciones."
     )
     viaticos = models.DecimalField(
-        "viáticos", max_digits=8, decimal_places=2, default=0, help_text="Alojamiento y comidas."
+        "viáticos", max_digits=8, decimal_places=2, default=0, help_text="Pago de alojamiento / comidas."
     )
     ayudante = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Horas / jornales de ayudante/s."
+        max_digits=8, decimal_places=2, default=0, help_text="Pago de jornales a ayudante/s."
     )
-    dibujante = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Horas / jornales de dibujante/s."
-    )
+    dibujante = models.DecimalField(max_digits=8, decimal_places=2, default=0, help_text="Pago a dibujante/s.")
     impresiones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Ploteos o impresiones de documentación."
+        max_digits=8, decimal_places=2, default=0, help_text="Pago por ploteos / impresiones de documentación."
     )
     mojones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Hierros, estacas, pintura, cintas peligro..."
+        max_digits=8, decimal_places=2, default=0, help_text="Gasto en hierros, estacas, pintura, cintas peligro."
     )
     gestor = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Gestores, comisionistas, fletes."
+        max_digits=8, decimal_places=2, default=0, help_text="Pago a gestores, comisionistas, fletes."
     )
     seguros_especiales = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Seguros ocasionales o especiales para este trabajo."
+        max_digits=8, decimal_places=2, default=0, help_text="Pago de seguros ocasionales para este trabajo."
     )
     alquiler_instrumentos = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         default=0,
-        help_text="Alquileres de instrumentos ocasionales para este trabajo.",
+        help_text="Pago de alquileres ocasionales para este trabajo.",
     )
     otros_gastos = models.DecimalField(
         max_digits=8, decimal_places=2, default=0, help_text="Otros gastos sin categorizar."
