@@ -28,7 +28,23 @@ class EmpresaForm(forms.ModelForm):
                             Div("horas_semanales", css_class="col-lg-4"),
                         ),
                     ),
-                    Fieldset("Gastos", Formset("gastos")),
+                    Fieldset(
+                        "Gastos",
+                        HTML(
+                            """<div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            Cargar todos los gastos asociados únicamente a la Empresa / Oficina.
+                            NO se cargan aquí los gastos asociados a los Profesionales que la conforman
+                            (salvo que así lo decidan sus miembros).
+                            Ejemplos:
+                            Alquiler, Impuestos y Servicios propios de la locación, Limpieza, Publicidad,
+                            Hosting, Licencias de Software, Sueldos, etc.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>"""
+                        ),
+                        Formset("gastos"),
+                    ),
                     FormActions(
                         Button(
                             "cancel",
@@ -92,9 +108,12 @@ class ProfesionalForm(UserChangeForm):
                         "Gastos",
                         HTML(
                             """<div class="alert alert-info alert-dismissible fade show" role="alert">
-                            Cargar todos los gastos asociados únicamente a este profesional. Ejemplo:
-                            Matrícula, Monotributo, Jubilación, Obra Social, Cursos de capacitación, etc.
+                            Cargar todos los gastos asociados únicamente a este Profesional.
                             NO se cargan aquí los gastos asociados a la Empresa / Oficina.
+                            Ejemplos:
+                            Matrícula, Monotributo, Jubilación, Obra Social, posiblemente algún Seguro,
+                            Capacitación, Celular, etc. <strong>Los gastos asociados a un Profesional
+                            formaran parte del costo por hora de su <em>mano de obra</em></strong>.
                             <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -160,7 +179,7 @@ class InstrumentoForm(forms.ModelForm):
                                         el valor invertido y <strong>reponer el instrumento</strong>,<br>
                                         <strong>T</strong>: promedio de trabajos realizados por año,<br>
                                         <strong>J</strong>: jornadas de este instrumento que se suelen
-                                        dedicar a cada trabajo. Ejemplo, para una Estación Total puede
+                                        dedicar a cada trabajo. Ejemplo: para una Estación Total puede
                                         ser 1 jornada por trabajo, pero para una PC pueden ser 4.<br>
                                         <strong>Resultado</strong>: haciendo <strong>A &times; T &times; J</strong>
                                         se obtiene un número aproximado de jornadas de vida útil.<br>
@@ -354,6 +373,12 @@ class TrabajoForm(forms.ModelForm):
                             Div("gestor", css_class="col-lg-4"),
                         ),
                     ),
+                ),
+                Tab("Profesionales", Formset("actuantes")),
+                Tab("Vehículos", Formset("movilidad")),
+                Tab("Instrumentos", Formset("instrumental")),
+                Tab(
+                    "Gastos especiales",
                     Fieldset(
                         "Gastos por trámites extra",
                         Row(
@@ -370,9 +395,6 @@ class TrabajoForm(forms.ModelForm):
                         ),
                     ),
                 ),
-                Tab("Profesionales", Formset("actuantes")),
-                Tab("Vehículos", Formset("movilidad")),
-                Tab("Instrumentos", Formset("instrumental")),
             ),
             FormActions(
                 Button(
