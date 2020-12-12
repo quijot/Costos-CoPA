@@ -131,6 +131,7 @@ APPS_AFTER = [
     "rest_framework",
     "django_extensions",
     "crispy_forms",
+    "captcha",
 ]
 # Apps installed before have priority, for example, with templates with the same name,
 # typically convenient when your app overrides login/logout templates
@@ -190,6 +191,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# reCAPTCHA
+RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", "6LdB_wAaAAAAAErHBvEgeTC16AY3bow9zP2vbE9T")
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", "")
+RECAPTCHA_REQUIRED_SCORE = os.environ.get("RECAPTCHA_REQUIRED_SCORE", 0.75)
 
 # # Constance
 # CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
