@@ -9,6 +9,8 @@ router = routers.DefaultRouter()
 urlpatterns = (
     # Inicio
     path("", views.Home.as_view(), name="index"),
+    # Contacto
+    path("contacto/", views.Contacto.as_view(), name="contacto"),
     # REST Framework
     path("api/", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
