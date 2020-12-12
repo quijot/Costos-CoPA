@@ -119,11 +119,10 @@ USE_THOUSAND_SEPARATOR = True
 
 APPS_BEFORE = [
     # my applications
-    # "constance",
-    # "constance.backends.database",
-    "costos.apps.CostosConfig",
 ]
 APPS_AFTER = [
+    # my applications
+    "costos.apps.CostosConfig",
     # other applications
     "dynamic_preferences",
     # comment the following line if you don't want to use user preferences
@@ -133,8 +132,7 @@ APPS_AFTER = [
     "crispy_forms",
     "captcha",
 ]
-# Apps installed before have priority, for example, with templates with the same name,
-# typically convenient when your app overrides login/logout templates
+# Apps installed before have priority
 INSTALLED_APPS = APPS_BEFORE + INSTALLED_APPS + APPS_AFTER
 
 # Middleware
@@ -196,14 +194,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", "6LdB_wAaAAAAAErHBvEgeTC16AY3bow9zP2vbE9T")
 RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", "")
 RECAPTCHA_REQUIRED_SCORE = os.environ.get("RECAPTCHA_REQUIRED_SCORE", 0.75)
-
-# # Constance
-# CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
-
-# CONSTANCE_CONFIG = {
-#     "THE_ANSWER": (42, "Answer to the Ultimate Question of Life, The Universe, and Everything"),
-#     "DOLAR": (decimal.Decimal(85.25), "Cotización del dólar."),
-# }
 
 # Dynamic Preferences
 TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
