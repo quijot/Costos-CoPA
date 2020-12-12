@@ -151,7 +151,12 @@ TEMPLATES[0]["DIRS"].append(BASE_DIR / "templates")
 HEROKUAPP_NAME = os.environ.get("DJANGO_HEROKUAPP_NAME", "copasfn")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "r+)1xlbz%lau$zpv$mbn#_6cy6rkc-eg!2@0s45jx!2ubuo3m1")
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-ALLOWED_HOSTS = [f"{HEROKUAPP_NAME}.herokuapp.com", "127.0.0.1"]
+CUSTOM_DOMAIN_NAME = os.environ.get("CUSTOM_DOMAIN_NAME", "")
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    f"{HEROKUAPP_NAME}.herokuapp.com",
+    CUSTOM_DOMAIN_NAME,
+]
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = "/"
