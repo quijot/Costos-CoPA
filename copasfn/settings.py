@@ -154,7 +154,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 CUSTOM_DOMAIN_NAME = os.environ.get("CUSTOM_DOMAIN_NAME", "")
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    f"{HEROKUAPP_NAME}.herokuapp.com",
+    # f"{HEROKUAPP_NAME}.herokuapp.com",  # this should be commented out if CUSTOM_DOMAIN_NAME is set
     CUSTOM_DOMAIN_NAME,
 ]
 
