@@ -1,7 +1,11 @@
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+
+
+class AuthenticationFormCAPTCHA(AuthenticationForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV3())
 
 
 class EmailValidationOnForgotPassword(PasswordResetForm):

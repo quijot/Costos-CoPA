@@ -41,12 +41,7 @@
         <div class="form-group">
           <input type="password" name="password" autocomplete="current-password" required id="id_password" class="form-control form-control-user" placeholder="Contraseña">
         </div>
-        <!-- <div class="form-group">
-          <div class="custom-control custom-checkbox small">
-            <input type="checkbox" class="custom-control-input" id="customCheck">
-            <label class="custom-control-label" for="customCheck">Recordarme</label>
-          </div>
-        </div> -->
+        {{ form.captcha }}
         <input type="submit" class="btn btn-primary btn-user btn-block" value="Ingresar">
         <input type="hidden" name="next" value="{{ next }}">
       </form>
