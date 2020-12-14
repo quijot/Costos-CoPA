@@ -22,19 +22,6 @@ class Periodo(Enum):
     AÑO = 360
 
 
-class ParametroGlobal(TimeStampedModel):
-    cotizacion_dolar = models.DecimalField("cotización del dólar", max_digits=8, decimal_places=2)
-    modulo_tributario = models.DecimalField("módulo tributario SCIT", max_digits=8, decimal_places=2)
-
-    class Meta:
-        ordering = ["-modified"]
-        verbose_name = "parámetro global"
-        verbose_name_plural = "parámetros globales"
-
-    def __str__(self):
-        return str(self.modified)
-
-
 class Empresa(models.Model):
     nombre = models.CharField(max_length=100, blank=True)
     horas_semanales = models.PositiveSmallIntegerField(default=40)

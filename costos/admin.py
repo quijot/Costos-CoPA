@@ -9,7 +9,6 @@ from .models import (
     Instrumental,
     Instrumento,
     Movilidad,
-    ParametroGlobal,
     Profesional,
     TipoGasto,
     Trabajo,
@@ -17,15 +16,6 @@ from .models import (
 )
 
 admin.site.register(TipoGasto)
-
-
-@admin.register(ParametroGlobal)
-class ParametroGlobalAdmin(admin.ModelAdmin):
-    list_display = [
-        "modified",
-        "cotizacion_dolar",
-        "modulo_tributario",
-    ]
 
 
 class ProfesionalInline(admin.StackedInline):
