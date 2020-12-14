@@ -14,8 +14,10 @@ Profesionales {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endi
 <div class="row">
   <div class="col">
     <div class="alert alert-info alert-dismissible fade show" role="alert">
-      Listado de profesionales que trabajan en <strong>{{ user.empresa }}</strong>. Para agregar a un/a nuevo/a
-      profesional, por favor contactarnos a través de ...
+      Listado de profesionales que trabajan en <strong>{{ user.empresa }}</strong>.
+      Para agregar profesionales, por favor contactarnos a través de este
+      <a class="alert-link"
+        href="mailto:infocostos@copasfn.org.ar?subject=Agregar%20profesionales%20{{ user.empresa }}&body=Agregar%20los%20siguientes%20profesionales%20(matrículas/nombres):%0d%0a">correo</a>.
       <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
         <span aria-hidden="true">&times;</span>
       </button>
