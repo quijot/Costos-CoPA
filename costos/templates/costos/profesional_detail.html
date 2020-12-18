@@ -9,12 +9,10 @@
 <span class="text-primary">{{ object }}</span>
 {% endblock page-heading %}
 {% block page-heading-buttons %}
-{% if object.pk == user.pk %}
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
   <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
 </div>
-{% endif %}
 {% endblock page-heading-buttons %}
 
 {% block content %}
@@ -50,7 +48,7 @@
           <div class="col mr-2">
             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
               Costo por hora</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">$ {{ user.costo_por_hora }}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">$ {{ object.costo_por_hora }}</div>
           </div>
           <div class="col-auto">
             <i class="fas fa-stopwatch fa-2x text-gray-300"></i>
