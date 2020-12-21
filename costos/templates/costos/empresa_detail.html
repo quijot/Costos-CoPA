@@ -10,6 +10,8 @@
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a onclick="window.print();" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>  
   <a href="{{ object.get_update_url }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
     <i class="fas fa-pen fa-sm text-white-50"></i> Editar</a>
 </div>
