@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% load static %}
 {% load l10n %}
 {% block title %}Trabajo {{ object }}{% endblock %}
 
 {% block page-heading %}
 <i class="fas fa-map"></i>
-<span>Trabajo /</span>
+Trabajo /
 <span class="text-primary">{{ object }}</span>
 {% endblock page-heading %}
 {% block page-heading-buttons %}
@@ -21,68 +20,6 @@
 
 {% block content %}
 <!-- Datos del Expediente -->
-<!-- <div class="row mb-2">
-  <div class="col-lg-3 mb-2">
-    <div class="card bg-info text-white shadow">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-white-50 small text-uppercase">Fecha</div>
-            {{ object.fecha }}
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 mb-2">
-    <div class="card bg-primary text-white shadow">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-white-50 small text-uppercase">Expediente</div>
-            {% if object.expediente %}{{ object.expediente }}{% else %}S/N{% endif %}
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-folder-open fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-4 mb-2">
-    <div class="card bg-warning text-white shadow">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-white-50 small text-uppercase">Comitente</div>
-            {{ object.comitente }}
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-file-signature fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-2 mb-2">
-    <div class="card bg-secondary text-white shadow">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-white-50 small text-uppercase">Horas</div>
-            {{ object.horas_total }}
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-clock fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 <div class="row mb-2">
   <div class="col-lg-3 col-md-6 mb-2">
     <div class="card border-left-info shadow h-100 py-2">
@@ -158,81 +95,6 @@
   </div>
 </div>
 
-<!-- <div class="row mb-4">
-  <div class="col-xl-3">
-    <div class="card border-left-primary shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-              # profesionales</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ object.cantidad_de_profesionales }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-users fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-3">
-    <div class="card border-left-success shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-              # vehículos</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ object.cantidad_de_vehiculos }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-truck-monster fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-3">
-    <div class="card border-left-warning shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-              # instrumentos</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              {{ object.cantidad_de_instrumentos }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="fas fa-ruler-combined fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-xl-3">
-    <div class="card border-left-danger shadow h-100 py-2">
-      <div class="card-body">
-        <div class="row no-gutters align-items-center">
-          <div class="col mr-2">
-            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-              Costo Total</div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">
-              $ {{ object.costo_total }}
-            </div>
-          </div>
-          <div class="col-auto">
-            <i class="far fa-dollar-sign fa-2x text-gray-300"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <div class="row mb-2">
   <div class="col-lg-3 col-md-6 mb-2">
     <div class="card bg-info text-white shadow">
@@ -295,80 +157,6 @@
     </div>
   </div>
 </div>
-
-<!-- Datos de Expediente -->
-<!-- <div class="row">
-  <div class="col">
-    <div class="card border-left-primary shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-          Datos de Expediente</strong>
-        </h6>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-sm table-condensed table-hover table-striped">
-            <tbody>
-              <tr>
-                <th>Fecha de cálculo</th>
-                <td>{{ object.fecha }}</td>
-              </tr>
-              <tr>
-                <th>Expediente CoPA</th>
-                <td>{% if object.expediente %}{{ object.expediente }}{% else %}S/N{% endif %}</td>
-              </tr>
-              <tr>
-                <th>Comitente</th>
-                <td>{{ object.comitente }}</td>
-              </tr>
-              <tr>
-                <th>Horas totales ({{ object.cantidad_de_profesionales }}
-                  profesional{% if object.cantidad_de_profesionales > 1 %}es{% endif %})</th>
-                <td>{{ object.horas_total }} horas</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- Porcentajes de cada rubro -->
-<!-- <div class="row">
-  <div class="col">
-    <div class="card border-left-primary shadow mb-4">
-      <div class="card-body">
-        <h4 class="small font-weight-bold">Proporciones <span class="float-right">100%</span>
-        </h4>
-        <div class="progress mb-2" style="height: 3em;">
-          <div title="Empresa" class="progress-bar bg-primary" role="progressbar"
-            style="width: {{ object.proporcion_empresa|safe }}%" aria-valuenow="{{ object.proporcion_empresa|safe }}"
-            aria-valuemin="0" aria-valuemax="100">{{ object.proporcion_empresa|safe }}%</div>
-          <div title="Actuantes" class="progress-bar bg-info" role="progressbar"
-            style="width: {{ object.proporcion_actuantes|safe }}%"
-            aria-valuenow="{{ object.proporcion_actuantes|safe }}" aria-valuemin="0" aria-valuemax="100">
-            {{ object.proporcion_actuantes|safe }}%</div>
-          <div title="Movilidad" class="progress-bar bg-success" role="progressbar"
-            style="width: {{ object.proporcion_movilidad|safe }}%"
-            aria-valuenow="{{ object.proporcion_movilidad|safe }}" aria-valuemin="0" aria-valuemax="100">
-            {{ object.proporcion_movilidad|safe }}%</div>
-          <div title="Instrumental" class="progress-bar bg-warning" role="progressbar"
-            style="width: {{ object.proporcion_instrumental|safe }}%"
-            aria-valuenow="{{ object.proporcion_instrumental|safe }}" aria-valuemin="0" aria-valuemax="100">
-            {{ object.proporcion_instrumental|safe }}%</div>
-          <div title="Aportes" class="progress-bar bg-danger" role="progressbar"
-            style="width: {{ object.proporcion_aportes|safe }}%" aria-valuenow="{{ object.proporcion_aportes|safe }}"
-            aria-valuemin="0" aria-valuemax="100">{{ object.proporcion_aportes|safe }}%</div>
-          <div title="Específicos" class="progress-bar bg-secondary" role="progressbar"
-            style="width: {{ object.proporcion_especificos|safe }}%"
-            aria-valuenow="{{ object.proporcion_especificos|safe }}" aria-valuemin="0" aria-valuemax="100">
-            {{ object.proporcion_especificos|safe }}%</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <!-- Detalles por rubro -->
 <div class="row">
