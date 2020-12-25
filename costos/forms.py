@@ -329,6 +329,15 @@ class TrabajoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            HTML(
+                """<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Antes de guardar, recuerde asignar al menos un profesional actuante en la
+            pestaña <strong>Profesionales.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>"""
+            ),
             TabHolder(
                 Tab(
                     "Trabajo",
