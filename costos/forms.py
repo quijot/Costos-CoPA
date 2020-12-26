@@ -4,6 +4,7 @@ from crispy_forms.layout import HTML, Button, Div, Field, Fieldset, Layout, Row,
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse_lazy
+from dynamic_preferences.users.forms import user_preference_form_builder
 
 from . import models
 from .formset_layout import Formset
@@ -326,7 +327,25 @@ class TrabajoForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)
+        # now kwargs doesn't contain 'user', so we can safely pass it to the base class method
         super().__init__(*args, **kwargs)
+        # set all user preferences as initial values
+        if user:
+            user_pref = [
+                "visados",
+                "ayudante",
+                "viaticos",
+                "mojones",
+                "alquiler_instrumentos",
+                "seguros_especiales",
+                "dibujante",
+                "impresiones",
+                "gestor",
+                "otros_gastos",
+            ]
+            for pref in user_pref:
+                self.initial[pref] = user.preferences[f"trabajo__{pref}"]
         self.helper = FormHelper()
         self.helper.layout = Layout(
             HTML(
@@ -380,6 +399,12 @@ class TrabajoForm(forms.ModelForm):
                             Div("dibujante", css_class="col-lg-4"),
                             Div("impresiones", css_class="col-lg-4"),
                             Div("gestor", css_class="col-lg-4"),
+                        ),
+                    ),
+                    Fieldset(
+                        "Otros",
+                        Row(
+                            Div("otros_gastos", css_class="col-lg-12"),
                         ),
                     ),
                 ),
@@ -436,12 +461,6 @@ class TrabajoForm(forms.ModelForm):
                             Div("citaciones", css_class="col-lg-3"),
                         ),
                     ),
-                    Fieldset(
-                        "Otros",
-                        Row(
-                            Div("otros_gastos", css_class="col-lg-12"),
-                        ),
-                    ),
                 ),
             ),
             FormActions(
@@ -455,3 +474,68 @@ class TrabajoForm(forms.ModelForm):
                 style="text-align: right;",
             ),
         )
+
+
+def user_preferences_form(instance, section=None):
+    form = user_preference_form_builder(instance=instance, section=section)
+    form.helper = FormHelper()
+    form.helper.layout = Layout(
+        TabHolder(
+            Tab(
+                "Trabajos",
+                HTML(
+                    """<div class="alert alert-dark alert-dismissible fade show" role="alert">
+                Cargue aquí los valores más habituales para sus trabajos, de esta manera,
+                se cargarán <strong>por defecto</strong> cada vez que agregue un nuevo Trabajo.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>"""
+                ),
+                Fieldset(
+                    "Gastos típicos de Mensura",
+                    Row(
+                        Div("trabajo__visados", css_class="col-lg-3"),
+                    ),
+                ),
+                Fieldset(
+                    "Gastos en jornadas de medición",
+                    Row(
+                        Div("trabajo__ayudante", css_class="col-lg-4"),
+                        Div("trabajo__viaticos", css_class="col-lg-4"),
+                        Div("trabajo__mojones", css_class="col-lg-4"),
+                    ),
+                    Row(
+                        Div("trabajo__alquiler_instrumentos", css_class="col-lg-6"),
+                        Div("trabajo__seguros_especiales", css_class="col-lg-6"),
+                    ),
+                ),
+                Fieldset(
+                    "Gastos por presentaciones",
+                    Row(
+                        Div("trabajo__dibujante", css_class="col-lg-4"),
+                        Div("trabajo__impresiones", css_class="col-lg-4"),
+                        Div("trabajo__gestor", css_class="col-lg-4"),
+                    ),
+                ),
+                Fieldset(
+                    "Otros",
+                    Row(
+                        Div("trabajo__otros_gastos", css_class="col-lg-12"),
+                    ),
+                ),
+            ),
+        ),
+        FormActions(
+            Button(
+                "cancel",
+                "Cancelar",
+                css_class="btn-dark",
+                onclick=f"window.location.href = '{reverse_lazy('trabajo_list')}';",
+            ),
+            Submit("save", "Guardar"),
+            style="text-align: right;",
+        ),
+    )
+
+    return form

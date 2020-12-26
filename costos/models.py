@@ -5,9 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django_extensions.db.models import TimeStampedModel
 
-from .dynamic_preferences_registry import get_cotizacion_dolar, get_modulo_tributario, get_valor_litro
+from .preferences import get_cotizacion_dolar, get_modulo_tributario, get_valor_litro
 
 
 class Periodo(Enum):

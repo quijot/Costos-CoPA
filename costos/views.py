@@ -1,5 +1,7 @@
 from django.contrib.auth import mixins  # LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic  # ListView
@@ -16,6 +18,16 @@ class CounterMixin:
 
 class Home(generic.TemplateView):
     template_name = "index.html"
+
+
+class CurrentUserMixin:
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"user": self.request.user})
+        return kwargs
 
 
 class EmpresaFilterMixin:
@@ -229,7 +241,7 @@ class TrabajoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.D
 
 
 class TrabajoCreateView(
-    EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView
+    CurrentUserMixin, EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView
 ):
     model = models.Trabajo
     form_class = forms.TrabajoForm
@@ -245,3 +257,19 @@ class TrabajoUpdateView(
 class TrabajoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
     model = models.Trabajo
     success_url = reverse_lazy("trabajo_list")
+
+
+@login_required
+def user_preferences(request, section=None):
+    form_class = forms.user_preferences_form(request.user, section)
+    if request.method == "POST":
+        form = form_class(request.POST)
+        if form.is_valid():
+            for k, v in form.cleaned_data.items():
+                request.user.preferences[k] = v
+            request.user.save()
+            return HttpResponseRedirect(reverse_lazy('trabajo_list'))
+    else:
+        form = form_class()
+
+    return render(request, "costos/profesional_preferences.html", {"form": form})

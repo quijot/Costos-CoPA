@@ -20,6 +20,7 @@ urlpatterns = (
     # Profesionales
     path("profesionales/", views.ProfesionalListView.as_view(), name="profesional_list"),
     path("profesional/detail/<int:pk>/", views.ProfesionalDetailView.as_view(), name="profesional_detail"),
+    path("profesional/preferences/<str:section>", views.user_preferences, name="profesional_preferences"),
     path("profesional/update/<int:pk>/", views.ProfesionalUpdateView.as_view(), name="profesional_update"),
     # Instrumentos
     path("instrumentos/", views.InstrumentoListView.as_view(), name="instrumento_list"),

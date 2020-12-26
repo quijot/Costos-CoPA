@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Profesionales{% endblock %}
+
+{% block page-heading %}
+<i class="fas fa-cogs"></i>
+Preferencias
+{% endblock %}
+
+{% block content %}
+<div class="card border-left-primary shadow mb-4">
+  <div class="card-body">
+    {% crispy form %}
+  </div>
+</div>
+{% endblock %}

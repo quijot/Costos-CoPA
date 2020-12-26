@@ -11,11 +11,15 @@ Trabajos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if user.empresa %}
+<div class="btn-group d-print-none mr-auto px-4" role="group" aria-label="Preferences">
+  <a href="{% url 'profesional_preferences' 'trabajo' %}" class="d-sm-inline-block btn btn-sm btn-outline-danger shadow-sm">
+    <i class="fas fa-cogs fa-sm"></i> Preferencias</a>
+</div>
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
   <a onclick="window.print();" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>  
-  <a href="{% url 'trabajo_create' %}" class="d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-      class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
+    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>
+  <a href="{% url 'trabajo_create' %}" class="d-sm-inline-block btn btn-sm btn-success shadow-sm">
+    <i class="fas fa-plus fa-sm text-white-50"></i> Agregar</a>
 </div>
 {% endif %}
 {% endblock page-heading-buttons %}
@@ -38,7 +42,9 @@ Trabajos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}
           {% for object in object_list %}
           <tr>
             <td>
-              <a href="{{ object.get_absolute_url }}">{% if object.expediente %}{{ object.expediente }}{% else %}S/N{% endif %}</a>
+              <a href="{{ object.get_absolute_url }}">
+                {% if object.expediente %}{{ object.expediente }}{% else %}S/N{% endif %}
+              </a>
             </td>
             <td>{{ object.comitente }}</td>
             <td>{{ object.fecha }}</td>
