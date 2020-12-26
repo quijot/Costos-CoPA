@@ -101,7 +101,12 @@ class TrabajoChildrenContextMixin:
         formset_movilidad = context["movilidad"]
         formset_instrumental = context["instrumental"]
         with transaction.atomic():
-            if formset_actuantes.is_valid() and formset_movilidad.is_valid() and formset_instrumental.is_valid():
+            if (
+                form.is_valid()
+                and formset_actuantes.is_valid()
+                and formset_movilidad.is_valid()
+                and formset_instrumental.is_valid()
+            ):
                 # Save parent only if each formset is valid
                 self.object = form.save()
                 # Set instance and save formset
