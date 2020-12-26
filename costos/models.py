@@ -637,7 +637,7 @@ class Actuantes(models.Model):
 class Movilidad(models.Model):
     trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="movilidad")
     vehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, related_name="trabajos")
-    km = models.PositiveSmallIntegerField(default=70, help_text="Kilomtraje estimado.")
+    km = models.PositiveSmallIntegerField(default=70, help_text="Kilometraje estimado.")
 
     class Meta:
         ordering = ["-km", "vehiculo"]
