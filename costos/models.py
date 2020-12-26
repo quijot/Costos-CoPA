@@ -114,7 +114,7 @@ class Profesional(AbstractUser):
     @property
     def costo_por_hora(self):
         """Costo de 1 hora de trabajo del Profesional."""
-        total_gastos_semanales = sum([gasto.semanal for gasto in self.gastos.all()])
+        total_gastos_semanales = decimal.Decimal(sum([gasto.semanal for gasto in self.gastos.all()]))
         return round(total_gastos_semanales / self.empresa.horas_semanales, 2) if self.empresa else 0
 
     @property
