@@ -275,7 +275,7 @@ ActuantesInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Actuantes,
     fields=("profesional", "horas"),
-    extra=3,
+    extra=1,
     min_num=1,
     validate_min=True,
 )
@@ -285,7 +285,7 @@ MovilidadInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Movilidad,
     fields=("vehiculo", "km"),
-    extra=2,
+    extra=1,
 )
 
 
@@ -293,7 +293,7 @@ InstrumentalInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Instrumental,
     fields=("instrumento", "jornadas"),
-    extra=5,
+    extra=1,
 )
 
 
@@ -383,9 +383,48 @@ class TrabajoForm(forms.ModelForm):
                         ),
                     ),
                 ),
-                Tab("Profesionales", Formset("actuantes")),
-                Tab("Vehículos", Formset("movilidad")),
-                Tab("Instrumentos", Formset("instrumental")),
+                Tab(
+                    "Profesionales",
+                    Formset("actuantes"),
+                    Div(
+                        Button(
+                            "add-profesional",
+                            "&plus; Profesional",
+                            css_class="btn-sm btn-info",
+                            title="Agregar otro/a Profesional",
+                            onclick="add_form('actuantes')",
+                        ),
+                        style="text-align: right;",
+                    ),
+                ),
+                Tab(
+                    "Vehículos",
+                    Formset("movilidad"),
+                    Div(
+                        Button(
+                            "add-vehiculo",
+                            "&plus; Vehículo",
+                            css_class="btn-sm btn-success",
+                            title="Agregar otro Vehículo",
+                            onclick="add_form('movilidad')",
+                        ),
+                        style="text-align: right;",
+                    ),
+                ),
+                Tab(
+                    "Instrumentos",
+                    Formset("instrumental"),
+                    Div(
+                        Button(
+                            "add-instrumento",
+                            "&plus; Instrumento",
+                            css_class="btn-sm btn-warning",
+                            title="Agregar otro Instrumento",
+                            onclick="add_form('instrumental')",
+                        ),
+                        style="text-align: right;",
+                    ),
+                ),
                 Tab(
                     "Gastos especiales",
                     Fieldset(
@@ -413,6 +452,6 @@ class TrabajoForm(forms.ModelForm):
                     onclick=f"window.location.href = '{reverse_lazy('trabajo_list')}';",
                 ),
                 Submit("save", "Guardar"),
-                css_class="float-right",
+                style="text-align: right;",
             ),
         )
