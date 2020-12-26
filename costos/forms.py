@@ -272,9 +272,18 @@ class VehiculoForm(forms.ModelForm):
         )
 
 
+class ActuantesForm(forms.ModelForm):
+    profesional = forms.ModelChoiceField(models.Profesional.objects.none())
+
+    class Meta:
+        model = models.Actuantes
+        fields = "__all__"
+
+
 ActuantesInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Actuantes,
+    form=ActuantesForm,
     fields=("profesional", "horas"),
     extra=1,
     min_num=1,
@@ -282,17 +291,35 @@ ActuantesInlineFormSet = forms.inlineformset_factory(
 )
 
 
+class MovilidadForm(forms.ModelForm):
+    vehiculo = forms.ModelChoiceField(models.Vehiculo.objects.none())
+
+    class Meta:
+        model = models.Movilidad
+        fields = "__all__"
+
+
 MovilidadInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Movilidad,
+    form=MovilidadForm,
     fields=("vehiculo", "km"),
     extra=1,
 )
 
 
+class InstrumentalForm(forms.ModelForm):
+    instrumento = forms.ModelChoiceField(models.Instrumento.objects.none())
+
+    class Meta:
+        model = models.Instrumental
+        fields = "__all__"
+
+
 InstrumentalInlineFormSet = forms.inlineformset_factory(
     models.Trabajo,
     models.Instrumental,
+    form=InstrumentalForm,
     fields=("instrumento", "jornadas"),
     extra=1,
 )
