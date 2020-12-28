@@ -7,11 +7,11 @@
 
 {% block page-heading %}
 <i class="fas fa-map"></i>
-Trabajos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}
+<span class="pr-4">Trabajos {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endif %}</span>
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 {% if user.empresa %}
-<div class="btn-group d-print-none mr-auto px-4" role="group" aria-label="Preferences">
+<div class="btn-group d-print-none mr-auto py-1" role="group" aria-label="Preferences">
   <a href="{% url 'profesional_preferences' 'trabajo' %}" class="d-sm-inline-block btn btn-sm btn-outline-danger shadow-sm">
     <i class="fas fa-cogs fa-sm"></i> Preferencias</a>
 </div>
