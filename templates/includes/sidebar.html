@@ -8,8 +8,9 @@
   <!-- Divider -->
   <hr class="sidebar-divider my-0">
   <!-- Nav Item - Dashboard -->
-  <li class="nav-item active">
-    <a class="nav-link" href="{% url 'index' %}">
+  {% url 'index' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Tablero principal</span>
     </a>
@@ -26,43 +27,49 @@
     {% endif %}
   </div>
   {% if not user.empresa %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'empresa_create' %}">
+  {% url 'empresa_create' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-building"></i>
       <span>Crear Mi Empresa</span>
     </a>
   </li>
   {% else %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'empresa_detail' user.empresa.pk %}">
+  {% url 'empresa_detail' user.empresa.pk as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-building"></i>
       <span>Mi Empresa</span>
     </a>
   </li>
   <!-- Nav Item - Profesionales Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'profesional_list' %}">
+  {% url 'profesional_list' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-users"></i>
       <span>Profesionales</span>
     </a>
   </li>
   <!-- Nav Item - Instrumentos Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'instrumento_list' %}">
+  {% url 'instrumento_list' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-ruler-combined"></i>
       <span>Instrumentos</span>
     </a>
   </li>
   <!-- Nav Item - Vehiculos Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'vehiculo_list' %}">
+  {% url 'vehiculo_list' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-truck-monster"></i>
       <span>Vehículos</span>
     </a>
   </li>
   <!-- Nav Item - Trabajos Menu -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'trabajo_list' %}">
+  {% url 'trabajo_list' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-map"></i>
       <span>Trabajos</span>
     </a>
@@ -76,8 +83,9 @@
     Administración
   </div>
   <!-- Nav Item - admin -->
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'admin:index' %}">
+  {% url 'admin:index' as url %}
+  <li class="nav-item{% if request.path == url %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">
       <i class="fas fa-fw fa-toolbox"></i>
       <span>admin</span>
     </a>
