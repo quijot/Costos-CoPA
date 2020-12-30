@@ -23,7 +23,7 @@ class Periodo(Enum):
 
 class Empresa(models.Model):
     nombre = models.CharField(max_length=100, blank=True)
-    horas_semanales = models.PositiveSmallIntegerField(default=40)
+    horas_semanales = models.PositiveSmallIntegerField(default=40, help_text="Horas de trabajo por semana.")
 
     class Meta:
         ordering = ["nombre"]
