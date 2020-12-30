@@ -1,0 +1,203 @@
+<style>
+  :root {
+    --empresa: #4e73df;
+    --profesional: #36b9cc;
+    --instrumento: #f6c23e;
+    --vehiculo: #1cc88a;
+    --black: black;
+  }
+
+  .oc {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  ol.oc-ol {
+    list-style: none;
+  }
+
+  .body-organizational-chart {
+    margin: 30px 0 5px;
+    text-align: center;
+    /* font-family: "Nunito", sans-serif; */
+  }
+
+  .organizational-chart {
+    max-width: 1000px;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .rectangle {
+    position: relative;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  /*CUSTOM VARIABLES HERE*/
+
+  .empresa {
+    background: var(--empresa);
+  }
+
+  .profesional {
+    background: var(--profesional);
+  }
+
+  .instrumento {
+    background: var(--instrumento);
+  }
+
+  .vehiculo {
+    background: var(--vehiculo);
+  }
+
+  .level-1 {
+    width: 40%;
+    margin: 0 auto 40px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .level-1::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: var(--black);
+  }
+
+  .level-2-wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .level-2-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    left: 16.6666666666%;
+    width: 66.6666666666%;
+    height: 2px;
+    background: var(--black);
+  }
+
+  .level-2-wrapper::after {
+    display: none;
+    content: "";
+    position: absolute;
+    left: -20px;
+    bottom: -20px;
+    width: calc(100% + 20px);
+    height: 2px;
+    background: var(--black);
+  }
+
+  .level-2-wrapper li {
+    position: relative;
+  }
+
+  .level-2-wrapper>li::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: var(--black);
+  }
+
+  .level-2 {
+    width: 80%;
+    margin: 0 auto 40px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* .level-2::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: var(--black);
+  } */
+
+  .level-2::after {
+    display: none;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-100%, -50%);
+    width: 20px;
+    height: 2px;
+    background: var(--black);
+  }
+
+  @media screen and (max-width: 700px) {
+    .rectangle {
+      padding: 20px 10px;
+    }
+
+    .level-1,
+    .level-2 {
+      width: 100%;
+    }
+
+    .level-1 {
+      margin-bottom: 20px;
+    }
+
+    .level-1::before,
+    .level-2-wrapper>li::before {
+      display: none;
+    }
+
+    .level-2-wrapper,
+    .level-2-wrapper::after,
+    .level-2::after {
+      display: block;
+    }
+
+    .level-2-wrapper {
+      width: 90%;
+      margin-left: 10%;
+    }
+
+    .level-2-wrapper::before {
+      left: -20px;
+      width: 2px;
+      height: calc(100% + 40px);
+    }
+
+    .level-2-wrapper>li:not(:first-child) {
+      margin-top: 50px;
+    }
+  }
+</style>
+
+<div class="oc top-organizational-chart">
+  <div class="oc body-organizational-chart">
+    <div class="oc organizational-chart">
+      <h3 class="oc level-1 empresa rectangle">Empresa<br><small>(gastos)</small></h3>
+      <ol class="oc oc-ol level-2-wrapper">
+        <li>
+          <h4 class="oc level-2 profesional rectangle">Profesionales<br><small>(gastos)</small></h4>
+        </li>
+        <li>
+          <h4 class="oc level-2 instrumento rectangle">Instrumentos<br><small>(amortización)</small></h4>
+        </li>
+        <li>
+          <h4 class="oc level-2 vehiculo rectangle">Vehículos<br><small>(amortización)</small></h4>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

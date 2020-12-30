@@ -1,19 +1,176 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Inicio{% endblock %}
-<!-- block stylesheets %}{% endblock  -->
 {% block page-heading %}{% endblock %}
 {% block content %}
 <div class="jumbotron">
-  <h1 class="d-none d-md-block display-3">{% ifequal user.first_name|default:""|slice:"-1:" "a" %}¡Bienvenida!{% else %}¡Bienvenido!{% endifequal %}</h1>
-  <h1 class="d-block d-sm-none display-5">{% ifequal user.first_name|default:""|slice:"-1:" "a" %}¡Bienvenida!{% else %}¡Bienvenido!{% endifequal %}</h1>
-  <p class="lead">En el panel lateral se encuentran los accesos para cada módulo. Arriba a la derecha, su perfil de usuario.</p>
-  <hr class="my-4">
-  <!-- <p>Para mayor información, puede consultar la documentación oficial y los tutoriales de cada módulo del sistema.</p>
+  <h1 class="d-none d-md-block display-3">
+    {% ifequal user.first_name|default:""|slice:"-1:" "a" %}¡Bienvenida!{% else %}¡Bienvenido!{% endifequal %}
+  </h1>
+  <h1 class="d-block d-sm-none display-5">
+    {% ifequal user.first_name|default:""|slice:"-1:" "a" %}¡Bienvenida!{% else %}¡Bienvenido!{% endifequal %}
+  </h1>
+  {% if user.is_authenticated %}
+  <p class="lead">En el panel lateral se encuentran los accesos para cada módulo. Arriba a la derecha, su perfil de
+    usuario.</p>
+  <p>Para mayor información, puede consultar la documentación oficial y los tutoriales del sistema.</p>
   <p class="lead">
-    <a class="btn btn-outline-primary" href="#" role="button">Documentación</a>
-    <a class="btn btn-outline-info" href="#" role="button">Tutoriales</a>
-    <a class="btn btn-outline-warning" href="#" role="button">Soporte Técnico</a>
-  </p> -->
+    <a class="btn btn-outline-primary" href="#documentation" role="button">Documentación</a>
+    <a class="btn btn-outline-info" href="#tutorial" role="button">Tutoriales</a>
+    {% if user.email %}
+    <a class="btn btn-outline-warning" href="mailto:infocostos@copasfn.org.ar" role="button">Soporte Técnico</a>
+    {% endif %}
+  </p>
+  {% endif %}
 </div>
+
+{% if user.is_authenticated %}
+<!-- Collapsable Card: Documentación -->
+<div class="card shadow mb-4" id="documentation">
+  <!-- Card Header - Accordion -->
+  <a href="#collapseCardDoc" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true"
+    aria-controls="collapseCardDoc">
+    <h6 class="m-0 font-weight-bold text-primary"><i class="fas fa-book"></i> Cómo funciona</h6>
+  </a>
+  <!-- Card Content - Collapse -->
+  <div class="collapse show" id="collapseCardDoc">
+    <div class="card-body">
+      <h2>Objetivo</h2>
+      <p>Queremos calcular los costos de un <strong>Trabajo</strong> teniendo en cuenta los gastos de la
+        <strong>Empresa</strong>/Oficina y de los <strong>Profesionales</strong> actuantes y las amortizaciones de los
+        recursos utilizados (<strong>Instrumentos</strong> y <strong>Vehículos</strong>).
+      </p>
+      <h2>Modelo conceptual subyacente</h2>
+      {% include "costos/model.html" %}
+      <h3>Empresa como agrupación de Profesionales y recursos</h3>
+      <p>Cada Profesional desarrolla su trabajo de gabinete en una locación física (Oficina), que representamos como una
+        <em>Empresa</em> y que tiene asociada ciertos gastos como alquiler, impuestos, servicios, librería, seguros,
+        publicidad, etc.
+      </p>
+      <p>Algunos profesionales trabajan en soledad, pero otros lo hacen en sociedad (2 o más colegas), compartiendo
+        recursos y gastos de Oficina.</p>
+      <p>El Sistema permite ambos casos:
+      <ul>
+        <li>Empresa unipersonal, es decir, 1 Empresa &harr; 1 Profesional;</li>
+        <li>Asociaciones de 2 o más profesionales, o sea, 1 Empresa &harr; N Profesionales.</li>
+      </ul>
+      </p>
+      <p>Cada Profesional miembro de la Empresa tiene sus propios gastos como matrícula, jubilación, obra social,
+        monotributo o ganancias, seguros, capacitaciones, etc.</p>
+      <h3>Recursos</h3>
+      <p>La Empresa cuenta con una serie de recursos que se categorizan como Instrumento o como Vehículo.</p>
+      <h4>Instrumental</h4>
+      <p>Los Instrumentos son todos los que se utilizan en los Trabajos y son susceptibles de amortización. No solo los
+        de medición en campo (Estación Total, receptor GNSS, controladora, celular, Nivel, Drone, disto, cinta, trípode,
+        bastón, etc.) sino también los de gabinete (PC, notebook, cargadores, muebles, etc.).</p>
+      <h4>Vehículos / Movilidad</h4>
+      <p>Los Vehículos son los que otorgan movilidad para las campañas de relevamiento y para los trámites. También son
+        objetos amortizables, con impuestos (patente, seguro) y gastos de mantenimiento (combustible, cochera, lavado,
+        service, reparaciones, repuestos, etc.).</p>
+      <h3>Trabajos</h3>
+      <p>Teniendo en claro este esquema, a cada Trabajo realizado por la Empresa se le asignan uno o más Profesionales
+        actuantes y todos los Instrumentos y Vehículos utilizados para su realización. Además, se detallan los Gastos
+        Específicos como Aportes, impresiones/ploteos, trámites, sellados, visados en reparticiones públicas, etc.</p>
+      <p>Finalmente, el Sistema calcula el <strong>Costo Total del Trabajo</strong> a partir de todos los recursos que
+        se dispusieron para su realización, incluyendo:
+      <ul>
+        <li>costo por horas de Empresa/Oficina;</li>
+        <li>costo de Profesionales actuantes (horas de mano de obra);</li>
+        <li>amortizaciones de los instrumentos (jornadas de trabajo).</li>
+        <li>amortizaciones y costos de manteniemiento de los vehículos (kilómetros).</li>
+      </ul>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Collapsable Card: Documentación -->
+<div class="card shadow mb-4" id="tutorial">
+  <!-- Card Header - Accordion -->
+  <a href="#collapseCardTutorial" class="d-block card-header py-3" data-toggle="collapse" role="button"
+    aria-expanded="true" aria-controls="collapseCardTutorial">
+    <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-question-circle"></i> Cómo utilizarlo</h6>
+  </a>
+  <!-- Card Content - Collapse -->
+  <div class="collapse show" id="collapseCardTutorial">
+    <div class="card-body">
+      <h2>Primer ingreso</h2>
+      <p>El usuario que ingresa por primera vez debe cumplir con dos pasos:
+      <ul>
+        <li>
+          <a href="{% url 'profesional_detail' user.pk %}" class="text-info">
+            Editar su Perfil
+          </a>
+        </li>
+        <ul>
+          <li>importante: ingresar dirección de email válida</li>
+          <li>asignar gastos personales del Profesional</li>
+        </ul>
+        <li>
+          <a href="{% if user.empresa %}{% url 'empresa_detail' user.empresa.pk %}{% else %}{% url 'empresa_create' %}{% endif %}"
+            class="text-primary">
+            Crear su Empresa
+          </a>
+        </li>
+        <ul>
+          <li>importante: ingresar cantidad de horas semanales de trabajo</li>
+          <li>asignar gastos de la Oficina</li>
+        </ul>
+      </ul>
+      </p>
+      <p>La creación de la Empresa tiene dos objetivos:
+      <ol>
+        <li>poder diferenciar gastos relacionados a una Oficina o locación física (como alquiler, impuestos, servicios,
+          etc.) de gastos relacionados a los Profesionales (matrícula, monotributo o ganacias, jubliación, obra social,
+          etc.);</li>
+        <li>permitir agrupar varios Profesionales, Instrumentos y Vehículos que estarán disponibles para el cáclulo de
+          los costos de los Trabajos.</li>
+      </ol>
+      </p>
+      <h2>Recursos</h2>
+      <p>Una vez creada la Empresa, se pueden cargar más Profesionales y todos los Instrumentos y Vehículos
+        pertenecientes a la Empresa (o a los Profesionales de la misma) que estarán disponibles para su utilización.</p>
+      <p>Cada recurso tiene una serie de parámetros para poder calcular sus amortizaciones.</p>
+      <p>Es importante completar los datos a conciencia, para que el cálculo de costos sea lo más preciso posible.</p>
+      <h2>Uso regular</h2>
+      <h3>Cálculo de Costos de Trabajos</h3>
+      <p>Una vez cargados los gastos de Empresa, de Profesional/es y todos los Instrumentos y Vehículos, podrá comenzar
+        a cargar Trabajos.</p>
+      <p>Para una mayor claridad es importante tener presente que:
+      <ul>
+        <li>los costos de Empresa y de Profesionales se calculan <strong>por hora</strong>;</li>
+        <li>la amortización de Instrumentos se calcula <strong>por jornada</strong> de trabajo;</li>
+        <li>la amortización de Vehículos se calcula <strong>por km</strong>.</li>
+      </ul>
+      </p>
+      <p>Esto significa que cuando se crea un Trabajo, se deben asignar:
+      <ul>
+        <li>carga horaria de cada Profesional actuante;</li>
+        <li>jornadas de utilización de cada Instrumento interviniente;</li>
+        <li>km recorridos por cada Vehículo utilizado.</li>
+      </ul>
+      </p>
+      <p>Además, se cargan también una serie de gastos específicos de ese Trabajo.</p>
+      <p class="font-weight-bold">Finalmente, al guardar el Trabajo, se observan los detalles del mismo y el cálculo
+        automático de todos los costos.</p>
+      <h3>Valores personalizados</h3>
+      <p>Suele pasar que existen <em>valores típicos</em> para ciertos Trabajos. Por ejemplo: &quot;los costos por
+        Ayudante son casi siempre los mismos&quot; o &quot;el costo del Visado Municipal se repite la inmensa mayoría de
+        las veces&quot;.</p>
+      <p>En estos casos resulta tedioso tener que cargar <strong>siempre los mismos valores</strong> cada vez que se
+        crea un nuevo Trabajo. Para facilitarlo, se pueden configurar las <a
+          href="{% url 'profesional_preferences' 'trabajo' %}">Preferencias de Trabajo</a>, precargando nuestros
+        <em>valores personalizados</em>.
+      </p>
+      <h3>IMPORTANTE: Mantener valores actualizados</h3>
+      <p>Es importante mantener todos los valores actualizados. Los gastos de Empresa, de Profesionales, de Vehículos
+        que están expresados en ARS ($ argentinos) pueden sufrir severas alteraciones y repercutir en los costos
+        calculados. En cambio, los Instrumentos, cuyos valores están en U$ (dólares), se actualizan autmáticamente, dado
+        que la cotización oficial del dólar se mantiene actualizada por Sistema.</p>
+      <p>Otros valores mantenidos por Sistema son: el Módulo Tributario (sellados fiscales, informes de Catastro) y los
+        combustibles.</p>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock content %}
-<!-- block javascripts %}{% endblock -->
