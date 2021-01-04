@@ -80,6 +80,20 @@
   <div class="sidebar-heading">
     Ayuda
   </div>
+  {% url 'index' as url %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url|add:'#documentation' }}" onclick="$('#collapseCardDoc').addClass('show');$('#collapseCardTutorial').removeClass('show');">
+      <i class="fas fa-book"></i>
+      <span>Documentación</span>
+    </a>
+  </li>
+  {% url 'index' as url %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url|add:'#tutorial' }}" onclick="$('#collapseCardDoc').removeClass('show');$('#collapseCardTutorial').addClass('show');">
+      <i class="fas fa-question-circle"></i>
+      <span>Tutorial</span>
+    </a>
+  </li>
   {% url 'contact' as url %}
   <li class="nav-item{% if request.path == url %} active{% endif %}">
     <a class="nav-link" href="{{ url }}">

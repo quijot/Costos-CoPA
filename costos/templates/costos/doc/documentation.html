@@ -1,0 +1,43 @@
+<h2>Objetivo</h2>
+<p>Queremos calcular los costos de un <strong>Trabajo</strong> teniendo en cuenta los gastos de la
+  <strong>Empresa</strong>/Oficina y de los <strong>Profesionales</strong> actuantes y las amortizaciones de los
+  recursos utilizados (<strong>Instrumentos</strong> y <strong>Vehículos</strong>).</p>
+<h2>Modelo conceptual subyacente</h2>
+{% include "costos/model.html" %}
+<h3>Empresa como agrupación de Profesionales y recursos</h3>
+<p>Cada Profesional desarrolla su trabajo de gabinete en una locación física (Oficina), que representamos como una
+  <em>Empresa</em> y que tiene asociada ciertos gastos como alquiler, impuestos, servicios, librería, seguros,
+  publicidad, etc.</p>
+<p>Algunos profesionales trabajan en soledad, pero otros lo hacen en sociedad (2 o más colegas), compartiendo recursos y
+  gastos de Oficina.</p>
+<p>El Sistema permite ambos casos:
+<ul>
+  <li>Empresa unipersonal, es decir, 1 Empresa &harr; 1 Profesional;</li>
+  <li>Asociaciones de 2 o más profesionales, o sea, 1 Empresa &harr; N Profesionales.</li>
+</ul>
+</p>
+<p>Cada Profesional miembro de la Empresa tiene sus propios gastos como matrícula, jubilación, obra social, monotributo
+  o ganancias, seguros, capacitaciones, etc.</p>
+<h3>Recursos</h3>
+<p>La Empresa cuenta con una serie de recursos que se categorizan como Instrumento o como Vehículo.</p>
+<h4>Instrumental</h4>
+<p>Los Instrumentos son todos los que se utilizan en los Trabajos y son susceptibles de amortización. No solo los de
+  medición en campo (Estación Total, receptor GNSS, controladora, celular, Nivel, Drone, disto, cinta, trípode, bastón,
+  etc.) sino también los de gabinete (PC, notebook, cargadores, muebles, etc.).</p>
+<h4>Vehículos / Movilidad</h4>
+<p>Los Vehículos son los que otorgan movilidad para las campañas de relevamiento y para los trámites. También son
+  objetos amortizables, con impuestos (patente, seguro) y gastos de mantenimiento (combustible, cochera, lavado,
+  service, reparaciones, repuestos, etc.).</p>
+<h3>Trabajos</h3>
+<p>Teniendo en claro este esquema, a cada Trabajo realizado por la Empresa se le asignan uno o más Profesionales
+  actuantes y todos los Instrumentos y Vehículos utilizados para su realización. Además, se detallan los Gastos
+  Específicos como Aportes, impresiones/ploteos, trámites, sellados, visados en reparticiones públicas, etc.</p>
+<p>Finalmente, el Sistema calcula el <strong>Costo Total del Trabajo</strong> a partir de todos los recursos que se
+  dispusieron para su realización, incluyendo:
+<ul>
+  <li>costo por horas de Empresa/Oficina;</li>
+  <li>costo de Profesionales actuantes (horas de mano de obra);</li>
+  <li>amortizaciones de los instrumentos (jornadas de trabajo).</li>
+  <li>amortizaciones y costos de manteniemiento de los vehículos (kilómetros).</li>
+</ul>
+</p>
