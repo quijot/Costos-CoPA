@@ -68,19 +68,29 @@ class EmpresaForm(forms.ModelForm):
                             </div>"""
                         ),
                         Formset("gastos"),
-                    ),
-                    FormActions(
-                        Button(
-                            "cancel",
-                            "Cancelar",
-                            css_class="btn-dark",
-                            onclick=f"window.location.href = '{reverse_lazy('instrumento_list')}';",
+                        Div(
+                            Button(
+                                "add-gasto",
+                                "&plus; Gasto",
+                                css_class="btn-sm btn-danger",
+                                title="Agregar otro Gasto",
+                                onclick="add_form('gastos')",
+                            ),
+                            style="text-align: right;",
                         ),
-                        Submit("save", "Guardar"),
-                        css_class="float-right",
                     ),
                 ),
-            )
+            ),
+            FormActions(
+                Button(
+                    "cancel",
+                    "Cancelar",
+                    css_class="btn-dark",
+                    onclick=f"window.location.href = '{reverse_lazy('index')}';",
+                ),
+                Submit("save", "Guardar"),
+                style="text-align: right;",
+            ),
         )
 
 
@@ -88,7 +98,7 @@ GastosEmpresaInlineFormSet = forms.inlineformset_factory(
     models.Empresa,
     models.GastoEmpresa,
     fields=("tipo", "monto", "periodo", "descripcion"),
-    extra=10,
+    extra=1,
 )
 
 
@@ -144,19 +154,29 @@ class ProfesionalForm(UserChangeForm):
                             </div>"""
                         ),
                         Formset("gastos"),
-                    ),
-                    FormActions(
-                        Button(
-                            "cancel",
-                            "Cancelar",
-                            css_class="btn-dark",
-                            onclick=f"window.location.href = '{reverse_lazy('profesional_list')}';",
+                        Div(
+                            Button(
+                                "add-gasto",
+                                "&plus; Gasto",
+                                css_class="btn-sm btn-danger",
+                                title="Agregar otro Gasto",
+                                onclick="add_form('gastos')",
+                            ),
+                            style="text-align: right;",
                         ),
-                        Submit("save", "Guardar"),
-                        css_class="float-right",
                     ),
                 ),
-            )
+            ),
+            FormActions(
+                Button(
+                    "cancel",
+                    "Cancelar",
+                    css_class="btn-dark",
+                    onclick=f"window.location.href = '{reverse_lazy('profesional_list')}';",
+                ),
+                Submit("save", "Guardar"),
+                style="text-align: right;",
+            ),
         )
 
 
@@ -164,7 +184,7 @@ GastosPersonalesInlineFormSet = forms.inlineformset_factory(
     models.Profesional,
     models.GastoPersonal,
     fields=("tipo", "monto", "periodo", "descripcion"),
-    extra=10,
+    extra=1,
 )
 
 
