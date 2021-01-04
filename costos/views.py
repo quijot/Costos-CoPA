@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic  # ListView
@@ -163,7 +162,7 @@ class EmpresaCreateView(SuccessMessageMixin, ChildrenContextMixin, mixins.LoginR
                 Si, en cambio, desea unirse a la empresa de otro Profesional,
                 <a href="{reverse_lazy("contact")}" class="alert-link">contáctenos</a>."""
             messages.error(self.request, message % form.cleaned_data)
-            return redirect(empresa.get_absolute_url())
+            return redirect(empresa)
 
 
 class EmpresaUpdateView(EmpresaFilterMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView):
@@ -281,7 +280,7 @@ def user_preferences(request, section=None):
             for k, v in form.cleaned_data.items():
                 request.user.preferences[k] = v
             request.user.save()
-            return HttpResponseRedirect(reverse_lazy('trabajo_list'))
+            return redirect("trabajo_list")
     else:
         form = form_class()
 
