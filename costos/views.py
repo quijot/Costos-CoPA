@@ -30,6 +30,13 @@ class CurrentUserMixin:
         return kwargs
 
 
+class SuccessDeleteMessageMixin:
+    def delete(self, request, *args, **kwargs):
+        delete_message = self.success_message if hasattr(self, "success_message") else "Objeto eliminado con éxito"
+        messages.success(self.request, delete_message)
+        return super().delete(request, *args, **kwargs)
+
+
 class EmpresaFilterMixin:
     def get_queryset(self):
         """
@@ -144,7 +151,7 @@ class EmpresaCreateView(SuccessMessageMixin, ChildrenContextMixin, mixins.LoginR
     # ChildrenContextMixin params
     children = "gastos"
     fs = forms.GastosEmpresaInlineFormSet
-    success_message = "¡Empresa <strong>%(nombre)s</strong> creada con éxito!"
+    success_message = "¡Empresa <strong>%(nombre)s</strong> creada con éxito! Ud. ya puede comenzar a utilizar el sistema en todo su potencial."
 
     def form_valid(self, form):
         """Assign Empresa to the User who has created it, only if User do not have one yet."""
@@ -165,12 +172,15 @@ class EmpresaCreateView(SuccessMessageMixin, ChildrenContextMixin, mixins.LoginR
             return redirect(empresa)
 
 
-class EmpresaUpdateView(EmpresaFilterMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView):
+class EmpresaUpdateView(
+    EmpresaFilterMixin, SuccessMessageMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView
+):
     model = models.Empresa
     form_class = forms.EmpresaForm
     # ChildrenContextMixin params
     children = "gastos"
     fs = forms.GastosEmpresaInlineFormSet
+    success_message = "Empresa <strong>%(nombre)s</strong> modificada con éxito."
 
 
 class ProfesionalListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
@@ -182,17 +192,21 @@ class ProfesionalDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, gener
     form_class = forms.ProfesionalForm
 
 
-class ProfesionalCreateView(EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
+class ProfesionalCreateView(SuccessMessageMixin, EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
     model = models.Profesional
     form_class = forms.ProfesionalForm
+    success_message = "¡Profesional <strong>%(first_name)s %(last_name)s</strong> creado/a con éxito!"
 
 
-class ProfesionalUpdateView(EmpresaFilterMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView):
+class ProfesionalUpdateView(
+    SuccessMessageMixin, EmpresaFilterMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView
+):
     model = models.Profesional
     form_class = forms.ProfesionalForm
     # ChildrenContextMixin params
     children = "gastos"
     fs = forms.GastosPersonalesInlineFormSet
+    success_message = "Profesional <strong>%(first_name)s %(last_name)s</strong> modificado/a con éxito."
 
 
 class InstrumentoListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
@@ -204,19 +218,24 @@ class InstrumentoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, gener
     form_class = forms.InstrumentoForm
 
 
-class InstrumentoCreateView(EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
+class InstrumentoCreateView(SuccessMessageMixin, EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
     model = models.Instrumento
     form_class = forms.InstrumentoForm
+    success_message = "Instrumento <strong>%(nombre)s</strong> creado con éxito."
 
 
-class InstrumentoUpdateView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.UpdateView):
+class InstrumentoUpdateView(SuccessMessageMixin, EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.UpdateView):
     model = models.Instrumento
     form_class = forms.InstrumentoForm
+    success_message = "Instrumento <strong>%(nombre)s</strong> modificado con éxito."
 
 
-class InstrumentoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
+class InstrumentoDeleteView(
+    SuccessDeleteMessageMixin, EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView
+):
     model = models.Instrumento
     success_url = reverse_lazy("instrumento_list")
+    success_message = "Instrumento eliminado con éxito."
 
 
 class VehiculoListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
@@ -228,19 +247,22 @@ class VehiculoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.
     form_class = forms.VehiculoForm
 
 
-class VehiculoCreateView(EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
+class VehiculoCreateView(SuccessMessageMixin, EmpresaInitialMixin, mixins.LoginRequiredMixin, generic.CreateView):
     model = models.Vehiculo
     form_class = forms.VehiculoForm
+    success_message = "Vehículo <strong>%(nombre)s</strong> creado con éxito."
 
 
-class VehiculoUpdateView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.UpdateView):
+class VehiculoUpdateView(SuccessMessageMixin, EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.UpdateView):
     model = models.Vehiculo
     form_class = forms.VehiculoForm
+    success_message = "Vehículo <strong>%(nombre)s</strong> modificado con éxito."
 
 
-class VehiculoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
+class VehiculoDeleteView(SuccessDeleteMessageMixin, EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
     model = models.Vehiculo
     success_url = reverse_lazy("vehiculo_list")
+    success_message = "Vehículo eliminado con éxito."
 
 
 class TrabajoListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
@@ -253,22 +275,30 @@ class TrabajoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.D
 
 
 class TrabajoCreateView(
-    CurrentUserMixin, EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView
+    SuccessMessageMixin,
+    CurrentUserMixin,
+    EmpresaFilterMixin,
+    TrabajoChildrenContextMixin,
+    mixins.LoginRequiredMixin,
+    generic.CreateView,
 ):
     model = models.Trabajo
     form_class = forms.TrabajoForm
+    success_message = "Trabajo creado con éxito."
 
 
 class TrabajoUpdateView(
-    EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView
+    SuccessMessageMixin, EmpresaFilterMixin, TrabajoChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView
 ):
     model = models.Trabajo
     form_class = forms.TrabajoForm
+    success_message = "Trabajo modificado con éxito."
 
 
-class TrabajoDeleteView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
+class TrabajoDeleteView(SuccessDeleteMessageMixin, EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DeleteView):
     model = models.Trabajo
     success_url = reverse_lazy("trabajo_list")
+    success_message = "Trabajo eliminado con éxito."
 
 
 @login_required
@@ -280,6 +310,8 @@ def user_preferences(request, section=None):
             for k, v in form.cleaned_data.items():
                 request.user.preferences[k] = v
             request.user.save()
+            de_seccion = f"de {section}" if section else ""
+            messages.success(request, f"Preferencias {de_seccion} guardadas con éxito.")
             return redirect("trabajo_list")
     else:
         form = form_class()
