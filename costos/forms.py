@@ -10,6 +10,29 @@ from . import models
 from .formset_layout import Formset
 
 
+class ContactForm(forms.Form):
+    asunto = forms.CharField(required=True)
+    mensaje = forms.CharField(widget=forms.Textarea, required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field("asunto"),
+            Field("mensaje"),
+            FormActions(
+                Button(
+                    "cancel",
+                    "Cancelar",
+                    css_class="btn-dark",
+                    onclick=f"window.location.href = '{reverse_lazy('index')}';",
+                ),
+                Submit("save", "Enviar"),
+                style="text-align: right;",
+            ),
+        )
+
+
 class EmpresaForm(forms.ModelForm):
     class Meta:
         model = models.Empresa

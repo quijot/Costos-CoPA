@@ -18,7 +18,7 @@
     <a class="btn btn-outline-primary" href="#documentation" role="button">Documentación</a>
     <a class="btn btn-outline-info" href="#tutorial" role="button">Tutoriales</a>
     {% if user.email %}
-    <a class="btn btn-outline-warning" href="mailto:infocostos@copasfn.org.ar" role="button">Soporte Técnico</a>
+    <a class="btn btn-outline-warning" href="{% url 'contact' %}" role="button">Soporte Técnico</a>
     {% endif %}
   </p>
   {% endif %}

@@ -40,4 +40,7 @@ urlpatterns = (
     path("trabajo/detail/<int:pk>/", views.TrabajoDetailView.as_view(), name="trabajo_detail"),
     path("trabajo/update/<int:pk>/", views.TrabajoUpdateView.as_view(), name="trabajo_update"),
     path("trabajo/delete/<int:pk>/", views.TrabajoDeleteView.as_view(), name="trabajo_delete"),
+    # Contacto
+    path("contacto/", views.contact_view, name="contact"),
+    path("contacto/<str:asunto>/<str:mensaje>", views.contact_view, name="contact_prefilled"),
 )

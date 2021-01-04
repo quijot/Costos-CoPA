@@ -1,8 +1,11 @@
+from copasfn.settings import DEFAULT_FROM_EMAIL
+from django.contrib import messages
 from django.contrib.auth import mixins  # LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic  # ListView
 
@@ -273,3 +276,31 @@ def user_preferences(request, section=None):
         form = form_class()
 
     return render(request, "costos/profesional_preferences.html", {"form": form})
+
+
+@login_required
+def contact_view(request, asunto="", mensaje=""):
+    if request.method == "GET":
+        form = forms.ContactForm(initial={"asunto": asunto or None, "mensaje": mensaje or None})
+    else:
+        form = forms.ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data["asunto"]
+            message = f"{request.user} <{request.user.email}> escribió:\n\n{form.cleaned_data['mensaje']}"
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    DEFAULT_FROM_EMAIL,
+                    [f"{request.user} <{request.user.email}>", DEFAULT_FROM_EMAIL],
+                )
+                messages.success(
+                    request,
+                    """<strong>¡Su mensaje fue enviado!</strong>
+                    Nuestro Soporte Técnico le responderá a la brevedad.
+                    Gracias por escribirnos.""",
+                )
+            except BadHeaderError:
+                messages.error(request, "Encabezado no válido. No se pudo enviar.")
+            return redirect("contact")
+    return render(request, "costos/contacto.html", {"form": form})

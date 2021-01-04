@@ -12,7 +12,7 @@ Profesionales {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endi
 {% block page-heading-buttons %}
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
   <a onclick="window.print();" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>  
+    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>
 </div>
 {% endblock page-heading-buttons %}
 
@@ -21,9 +21,8 @@ Profesionales {% if user.empresa %}de <strong>{{ user.empresa }}</strong>{% endi
   <div class="col">
     <div class="alert alert-info alert-dismissible fade show" role="alert">
       Listado de profesionales que trabajan en <strong>{{ user.empresa }}</strong>.
-      Para agregar profesionales, por favor contactarnos a través de este
-      <a class="alert-link"
-        href="mailto:infocostos@copasfn.org.ar?subject=Agregar%20profesionales%20{{ user.empresa }}&body=Agregar%20los%20siguientes%20profesionales%20(matrículas/nombres):%0d%0a">correo</a>.
+      Para agregar nuevos profesionales, por favor contáctenos <a class="alert-link"
+        href="{% url 'contact_prefilled' 'Agregar profesionales a '|add:user.empresa.nombre 'Listado de profesionales (matrícula y nombre)' %}">aquí</a>.
       <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar">
         <span aria-hidden="true">&times;</span>
       </button>
