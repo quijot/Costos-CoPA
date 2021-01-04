@@ -2,6 +2,7 @@ from copasfn.settings import DEFAULT_FROM_EMAIL
 from django.contrib import messages
 from django.contrib.auth import mixins  # LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
 from django.http import HttpResponseRedirect
@@ -138,19 +139,31 @@ class EmpresaDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.D
     form_class = forms.EmpresaForm
 
 
-class EmpresaCreateView(ChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView):
+class EmpresaCreateView(SuccessMessageMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.CreateView):
     model = models.Empresa
     form_class = forms.EmpresaForm
     # ChildrenContextMixin params
     children = "gastos"
     fs = forms.GastosEmpresaInlineFormSet
+    success_message = "¡Empresa <strong>%(nombre)s</strong> creada con éxito!"
 
     def form_valid(self, form):
-        """Assign Empresa to the User who has created it."""
-        instance = form.save()
-        self.request.user.empresa = instance
-        self.request.user.save()
-        return super().form_valid(form)
+        """Assign Empresa to the User who has created it, only if User do not have one yet."""
+        if not self.request.user.empresa:
+            instance = form.save()
+            self.request.user.empresa = instance
+            self.request.user.save()
+            return super().form_valid(form)
+        else:
+            empresa = self.request.user.empresa
+            message = f"""No tiene permitido crear una nueva Empresa porque
+                Ud. ya pertenece a la Empresa <strong>{empresa}</strong>.<br>
+                Si desea modificar la Empresa actual, presione en
+                <a href="{empresa.get_update_url()}" class="alert-link">Editar</a>.<br>
+                Si, en cambio, desea unirse a la empresa de otro Profesional,
+                <a href="{reverse_lazy("contact")}" class="alert-link">contáctenos</a>."""
+            messages.error(self.request, message % form.cleaned_data)
+            return redirect(empresa.get_absolute_url())
 
 
 class EmpresaUpdateView(EmpresaFilterMixin, ChildrenContextMixin, mixins.LoginRequiredMixin, generic.UpdateView):
