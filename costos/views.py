@@ -24,9 +24,6 @@ class Home(generic.TemplateView):
 
 
 class CurrentUserMixin:
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs.update({"user": self.request.user})
