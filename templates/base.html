@@ -37,14 +37,18 @@
           <!-- Messages -->
           {% if messages %}
           {% for message in messages %}
-          <div
-            class="alert{% if message.tags == 'error' %} alert-danger {% elif message.tags %} alert-{{ message.tags }} {% else %} alert-primary {% endif %} alert-dismissible fade show"
-            role="alert">
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>ERROR</strong>:{% endif %}
-            {{ message|safe }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="row justify-content-md-end">
+            <div class="col-lg-6">
+              <div
+                class="alert{% if message.tags == 'error' %} alert-danger {% elif message.tags %} alert-{{ message.tags }} {% else %} alert-primary {% endif %} alert-dismissible fade show"
+                role="alert">
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<strong>ERROR</strong>:{% endif %}
+                {{ message|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
           </div>
           {% endfor %}
           {% endif %}
