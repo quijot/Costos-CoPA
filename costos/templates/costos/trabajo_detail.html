@@ -9,8 +9,10 @@ Trabajo /
 {% endblock page-heading %}
 {% block page-heading-buttons %}
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
+  <a href="{{ object.get_csv_url }}" class="d-sm-inline-block btn btn-sm btn-outline-secondary shadow-sm" title="Descargar en formato CSV">
+    <i class="fas fa-download fa-sm"></i> Descargar</a>
   <a onclick="window.print();" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>  
+    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>
   <a href="{{ object.get_delete_url }}" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Eliminar</a>
   <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">

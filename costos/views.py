@@ -1,3 +1,5 @@
+import csv
+
 from copasfn.settings import DEFAULT_FROM_EMAIL
 from django.contrib import messages
 from django.contrib.auth import mixins  # LoginRequiredMixin
@@ -5,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import BadHeaderError, send_mail
 from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic  # ListView
@@ -299,6 +302,49 @@ class TrabajoDeleteView(SuccessDeleteMessageMixin, EmpresaFilterMixin, mixins.Lo
     model = models.Trabajo
     success_url = reverse_lazy("trabajo_list")
     success_message = "Trabajo eliminado con éxito."
+
+
+@login_required
+def trabajo_csv(request, pk):
+    # Get the object
+    trabajo = models.Trabajo.objects.get(pk=pk)
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = f'attachment; filename="{trabajo}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(
+        [
+            "Fecha",
+            "Expediente",
+            "Comitente",
+            "Horas",
+            "Gastos de Empresa",
+            "Costo de actuantes",
+            "Costo de movilidad",
+            "Costo de instrumental",
+            "Aportes",
+            "Demás gastos específicos",
+            "Costo total",
+        ]
+    )
+    writer.writerow(
+        [
+            trabajo.fecha,
+            trabajo.expediente,
+            trabajo.comitente,
+            trabajo.horas_total,
+            trabajo.gastos_de_empresa,
+            trabajo.costo_actuantes,
+            trabajo.costo_movilidad,
+            trabajo.costo_instrumental,
+            trabajo.aportes,
+            trabajo.gastos_especificos,
+            trabajo.costo_total,
+        ]
+    )
+
+    return response
 
 
 @login_required

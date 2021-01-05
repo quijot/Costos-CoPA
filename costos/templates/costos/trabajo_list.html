@@ -50,6 +50,9 @@
             <td>{{ object.fecha }}</td>
             <td>$ {{ object.costo_total }}</td>
             <td>
+              <a href="{{ object.get_csv_url }}" class="btn btn-outline-secondary btn-circle btn-sm" title="Descargar CSV">
+                <i class="fas fa-download"></i>
+              </a>
               <a href="{{ object.get_absolute_url }}" class="btn btn-info btn-circle btn-sm" title="Ver">
                 <i class="fas fa-info"></i>
               </a>

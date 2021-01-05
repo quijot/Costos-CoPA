@@ -478,7 +478,7 @@ class Trabajo(models.Model):
         ordering = ["-fecha"]
 
     def __str__(self):
-        return f"{self.expediente}" if self.expediente else "S/N"
+        return f"{self.expediente}" if self.expediente else "S_N"
 
     trabajo = property(__str__)
 
@@ -490,6 +490,9 @@ class Trabajo(models.Model):
 
     def get_delete_url(self):
         return reverse("trabajo_delete", kwargs={"pk": self.pk})
+
+    def get_csv_url(self):
+        return reverse("trabajo_csv", kwargs={"pk": self.pk})
 
     @property
     def empresa(self):
