@@ -26,14 +26,15 @@
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
-    {% include 'includes/sidebar.html' %}
+    {% block sidebar %}{% include 'includes/sidebar.html' %}{% endblock %}
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
       <!-- Main Content -->
       <div id="content">
-        {% include 'includes/topbar.html' %}
+        {% block topbar %}{% include 'includes/topbar.html' %}{% endblock %}
         <!-- Begin Page Content -->
         <div class="container-fluid">
+          {% block messages %}
           <!-- Messages -->
           {% if messages %}
           {% for message in messages %}
@@ -52,6 +53,7 @@
           </div>
           {% endfor %}
           {% endif %}
+          {% endblock messages %}
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">{% block page-heading %}{% endblock %}</h1>
@@ -69,7 +71,7 @@
         <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
-      {% include 'includes/footer.html' %}
+      {% block footer %}{% include 'includes/footer.html' %}{% endblock %}
     </div>
     <!-- End of Content Wrapper -->
   </div>
