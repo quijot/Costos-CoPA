@@ -37,7 +37,7 @@
           <!-- Messages -->
           {% if messages %}
           {% for message in messages %}
-          <div class="row justify-content-md-end">
+          <div class="row justify-content-md-end" id="messages">
             <div class="col-lg-6">
               <div
                 class="alert{% if message.tags == 'error' %} alert-danger {% elif message.tags %} alert-{{ message.tags }} {% else %} alert-primary {% endif %} alert-dismissible fade show"
@@ -83,6 +83,11 @@
 
   {% include 'includes/scripts.html' %}
   <!-- Specific Page JS  -->
+  <script>
+    $(document).ready(function () {
+      $("#messages").fadeTo(5000, 0.9).slideUp();
+    });
+  </script>
   {% block javascripts %}{% endblock javascripts %}
 </body>
 {% endblock body %}
