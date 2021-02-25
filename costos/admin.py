@@ -68,6 +68,7 @@ class EmpresaAdmin(admin.ModelAdmin):
         "cantidad_de_profesionales",
         "cantidad_de_vehiculos",
         "cantidad_de_instrumentos",
+        "gastos_por_hora",
     ]
     list_filter = ["nombre"]
     search_fields = ["nombre"]
@@ -97,7 +98,7 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 @admin.register(Profesional)
 class ProfesionalAdmin(UserAdmin):
-    list_display = ("username", "matricula", "last_name", "first_name", "costo_por_hora", "is_staff")
+    list_display = ("username", "__str__", "costo_por_hora", "empresa", "last_login")
     list_filter = UserAdmin.list_filter + ("empresa",)
     search_fields = UserAdmin.search_fields + ("matricula", "cuit")
     custom_fields = (("CoPA", {"fields": ("empresa", "matricula", "cuit", "costo_por_hora")}),)
@@ -109,8 +110,8 @@ class ProfesionalAdmin(UserAdmin):
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "valor", "kilometraje_anual", "tipo_combustible", "rendimiento", "costo_km"]
-    list_filter = ["tipo_combustible"]
+    list_display = ["nombre", "valor", "kilometraje_anual", "tipo_combustible", "rendimiento", "costo_km", "empresa"]
+    list_filter = ["tipo_combustible", "empresa"]
     search_fields = ["nombre"]
     readonly_fields = [
         "combustible",
@@ -132,7 +133,8 @@ class VehiculoAdmin(admin.ModelAdmin):
 
 @admin.register(Instrumento)
 class InstrumentoAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "valor_USD", "valor_ARS", "vida_util", "costo_jornada"]
+    list_display = ["nombre", "valor_USD", "valor_ARS", "vida_util", "costo_jornada", "empresa"]
+    list_filter = ["empresa"]
     search_fields = ["nombre"]
     readonly_fields = [
         "valor_ARS",
@@ -142,8 +144,25 @@ class InstrumentoAdmin(admin.ModelAdmin):
 
 @admin.register(Trabajo)
 class TrabajoAdmin(admin.ModelAdmin):
-    list_display = ["expediente", "empresa", "fecha", "comitente", "costo_total"]
-    search_fields = ["expediente", "comitente"]
+    list_display = [
+        "expediente",
+        "empresa",
+        "fecha",
+        "comitente",
+        "cantidad_de_profesionales",
+        "cantidad_de_vehiculos",
+        "cantidad_de_instrumentos",
+        "costo_total",
+    ]
+    list_filter = ["profesionales__empresa__nombre"]
+    search_fields = [
+        "expediente",
+        "comitente",
+        "profesionales__matricula",
+        "profesionales__first_name",
+        "profesionales__last_name",
+        "profesionales__empresa__nombre",
+    ]
     date_hierarchy = "fecha"
     inlines = [ActuantesInline, MovilidadInline, InstrumentalInline]
     readonly_fields = [

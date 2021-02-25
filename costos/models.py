@@ -502,13 +502,19 @@ class Trabajo(models.Model):
     def cantidad_de_profesionales(self):
         return self.profesionales.count()
 
+    cantidad_de_profesionales.fget.short_description = "# profesionales"
+
     @property
     def cantidad_de_instrumentos(self):
         return self.instrumental.count()
 
+    cantidad_de_instrumentos.fget.short_description = "# instrumentos"
+
     @property
     def cantidad_de_vehiculos(self):
         return self.movilidad.count()
+
+    cantidad_de_vehiculos.fget.short_description = "# vehículos"
 
     @property
     def horas_total(self):
