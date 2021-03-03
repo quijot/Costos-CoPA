@@ -641,6 +641,14 @@ class Actuantes(models.Model):
     def __str__(self):
         return f"{self.trabajo} - {self.profesional} [{self.horas} hs]"
 
+    @property
+    def costo(self):
+        return self.profesional.costo_por_hora * self.horas
+
+    @property
+    def gasto_empresa(self):
+        return self.profesional.empresa.gastos_por_hora * self.horas
+
 
 class Movilidad(models.Model):
     trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="movilidad")
@@ -653,6 +661,10 @@ class Movilidad(models.Model):
     def __str__(self):
         return f"{self.trabajo} - {self.vehiculo} [{self.km} km]"
 
+    @property
+    def costo(self):
+        return self.vehiculo.costo_km * self.km
+
 
 class Instrumental(models.Model):
     trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="instrumental")
@@ -664,3 +676,7 @@ class Instrumental(models.Model):
 
     def __str__(self):
         return f"{self.trabajo} - {self.instrumento} [{self.jornadas} día/s]"
+
+    @property
+    def costo(self):
+        return self.instrumento.costo_jornada * self.jornadas

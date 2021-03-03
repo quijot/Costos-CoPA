@@ -200,6 +200,7 @@ Trabajo /
           <table class="table table-sm table-condensed table-hover">
             <thead>
               <tr>
+                <th></th>
                 <th>Rubro</th>
                 <th>Detalle</th>
                 <th>Monto</th>
@@ -207,180 +208,240 @@ Trabajo /
             </thead>
             <tbody>
               <tr class="table-primary">
-                <th>Gastos de Empresa</th>
+                <th><button class="btn btn-circle btn-sm btn-primary" id="empresa" onclick="details('empresa');">&plus;</button></th>
+                <th>GASTOS DE EMPRESA</th>
                 <td>{{ object.horas_total }} horas</td>
                 <td style="text-align:right">$ {{ object.gastos_de_empresa }}</td>
               </tr>
+              <tbody style="display:none" id="empresa-details">
+                {% for o in object.actuantes.all %}
+                <tr class="table-info">
+                  <td></td>
+                  <td>{{ o.profesional }}</td>
+                  <td>{{ o.horas }} hs</td>
+                  <td style="text-align:right" class="pr-4">$ {{ o.gasto_empresa }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
               <tr class="table-info">
-                <th>Costo de actuantes</th>
+                <th><button class="btn btn-circle btn-sm btn-info" id="actuantes" onclick="details('actuantes');">&plus;</button></th>
+                <th>COSTO DE ACTUANTES</th>
                 <td>{{ object.cantidad_de_profesionales }}
                   profesional{% if object.cantidad_de_profesionales > 1 %}es{% endif %} - {{ object.horas_total }} horas
                 </td>
                 <td style="text-align:right">$ {{ object.costo_actuantes }}</td>
               </tr>
+              <tbody style="display:none" id="actuantes-details">
+                {% for o in object.actuantes.all %}
+                <tr class="table-info">
+                  <td></td>
+                  <td>{{ o.profesional }}</td>
+                  <td>{{ o.horas }} hs</td>
+                  <td style="text-align:right" class="pr-4">$ {{ o.costo }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
               <tr class="table-success">
-                <th>Costo de movilidad</th>
+                <th><button class="btn btn-circle btn-sm btn-success" id="movilidad" onclick="details('movilidad');">&plus;</button></th>
+                <th>COSTO DE MOVILIDAD</th>
                 <td>{{ object.cantidad_de_vehiculos }} vehículo{% if object.cantidad_de_vehiculos > 1 %}s{% endif %} -
                   {{ object.cantidad_de_km }} km</td>
                 <td style="text-align:right">$ {{ object.costo_movilidad }}</td>
               </tr>
+              <tbody style="display:none" id="movilidad-details">
+                {% for o in object.movilidad.all %}
+                <tr class="table-success">
+                  <td></td>
+                  <td>{{ o.vehiculo }}</td>
+                  <td>{{ o.km }} km</td>
+                  <td style="text-align:right" class="pr-4">$ {{ o.costo }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
               <tr class="table-warning">
-                <th>Costo de instrumental</th>
+                <th><button class="btn btn-circle btn-sm btn-warning" id="instrumental" onclick="details('instrumental');">&plus;</button></th>
+                <th>COSTO DE INSTRUMENTAL</th>
                 <td>{{ object.cantidad_de_instrumentos }}
                   instrumento{% if object.cantidad_de_instrumentos > 1 %}s{% endif %} -
                   {{ object.cantidad_de_jornadas }} jornada{% if object.cantidad_de_instrumentos > 1 %}s{% endif %}</td>
                 <td style="text-align:right">$ {{ object.costo_instrumental }}</td>
               </tr>
+              <tbody style="display:none" id="instrumental-details">
+                {% for o in object.instrumental.all %}
+                <tr class="table-warning">
+                  <td></td>
+                  <td>{{ o.instrumento }}</td>
+                  <td>{{ o.jornadas }} jornada{% if o.jornadas > 1 %}s{% endif %}</td>
+                  <td style="text-align:right" class="pr-4">$ {{ o.costo }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
               <tr class="table-danger">
-                <th>Aportes</th>
+                <th><button class="btn btn-circle btn-sm btn-danger" id="aportes" onclick="details('aportes');">&plus;</button></th>
+                <th>APORTES PROFESIONALES</th>
                 <td>CoPA + Caja</td>
                 <td style="text-align:right">$ {{ object.aportes }}</td>
               </tr>
+              <tbody style="display:none" id="aportes-details">
+                <tr class="table-danger">
+                  <td></td>
+                  <td>Colegio</td>
+                  <td>13%</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.aporte_copa }}</td>
+                </tr>
+                <tr class="table-danger">
+                  <td></td>
+                  <td>Caja</td>
+                  <td>17%</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.aporte_caja }}</td>
+                </tr>
+              </tbody>
               <tr class="table-secondary">
+                <th><button class="btn btn-circle btn-sm btn-secondary" id="especificos" onclick="details('especificos');">&plus;</button></th>
                 <th>Demás gastos específicos</th>
                 <td></td>
                 <td style="text-align:right">$ {{ object.gastos_especificos }}</td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Detalle de Gastos Específicos -->
-<div class="row">
-  <div class="col">
-    <div class="card border-left-primary shadow mb-4">
-      <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-          Detalle de Gastos Específicos</strong>
-        </h6>
-      </div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-sm table-condensed table-hover table-striped">
-            <tbody>
-              {% if object.partidas %}
-              <tr>
-                <th>Sellado Fiscal</th>
-                <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %} -
-                  {{ object.lotes_finales }} lote{% if object.partidas > 1 %}s{% endif %}</td>
-                <td style="text-align:right">$ {{ object.sellado_fiscal }}</td>
-              </tr>
-              <tr>
-                <th>Informe{% if object.partidas > 1 %}s{% endif %} Catastral{% if object.partidas > 1 %}es{% endif %}
-                </th>
-                <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %}</td>
-                <td style="text-align:right">$ {{ object.informe_catastral }}</td>
-              </tr>
-              {% endif %}
-              {% if object.escrituras %}
-              <tr>
-                <th>Escrituras</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.escrituras }}</td>
-              </tr>
-              {% endif %}
-              {% if object.visados %}
-              <tr>
-                <th>Visados</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.visados }}</td>
-              </tr>
-              {% endif %}
-              {% if object.ayudante %}
-              <tr>
-                <th>Ayudante</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.ayudante }}</td>
-              </tr>
-              {% endif %}
-              {% if object.viaticos %}
-              <tr>
-                <th>Viáticos</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.viaticos }}</td>
-              </tr>
-              {% endif %}
-              {% if object.mojones %}
-              <tr>
-                <th>Mojones / estacas / cintas peligro</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.mojones }}</td>
-              </tr>
-              {% endif %}
-              {% if object.alquiler_instrumentos %}
-              <tr>
-                <th>Alquileres de instrumentos</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.alquiler_instrumentos }}</td>
-              </tr>
-              {% endif %}
-              {% if object.seguros_especiales %}
-              <tr>
-                <th>Seguros especiales / eventuales</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.seguros_especiales }}</td>
-              </tr>
-              {% endif %}
-              {% if object.dibujante %}
-              <tr>
-                <th>Dibujante</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.dibujante }}</td>
-              </tr>
-              {% endif %}
-              {% if object.impresiones %}
-              <tr>
-                <th>Impresiones / ploteos</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.impresiones }}</td>
-              </tr>
-              {% endif %}
-              {% if object.gestor %}
-              <tr>
-                <th>Gestor / Comisionista</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.gestor }}</td>
-              </tr>
-              {% endif %}
-              {% if object.ccu %}
-              <tr>
-                <th>Certificado Catastral Urgente</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.ccu }}</td>
-              </tr>
-              {% endif %}
-              {% if object.estudio_titulos %}
-              <tr>
-                <th>Estudio de Títulos</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.estudio_titulos }}</td>
-              </tr>
-              {% endif %}
-              {% if object.georreferenciacion %}
-              <tr>
-                <th>Georreferenciación / Vinculación POSGAR2007</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.georreferenciacion }}</td>
-              </tr>
-              {% endif %}
-              {% if object.citaciones %}
-              <tr>
-                <th>Citaciones / notificaciones certificadas</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.citaciones }}</td>
-              </tr>
-              {% endif %}
-              {% if object.otros_gastos %}
-              <tr>
-                <th>Otros gastos sin categorizar</th>
-                <td></td>
-                <td style="text-align:right">$ {{ object.otros_gastos }}</td>
-              </tr>
-              {% endif %}
+              <tbody style="display:none" id="especificos-details">
+                {% if object.partidas %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Sellado Fiscal</td>
+                  <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %} -
+                    {{ object.lotes_finales }} lote{% if object.partidas > 1 %}s{% endif %}</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.sellado_fiscal }}</td>
+                </tr>
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>
+                    Informe{% if object.partidas > 1 %}s{% endif %}
+                    Catastral{% if object.partidas > 1 %}es{% endif %}
+                  </td>
+                  <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %}</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.informe_catastral }}</td>
+                </tr>
+                {% endif %}
+                {% if object.escrituras %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Escrituras</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.escrituras }}</td>
+                </tr>
+                {% endif %}
+                {% if object.visados %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Visados</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.visados }}</td>
+                </tr>
+                {% endif %}
+                {% if object.ayudante %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Ayudante</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.ayudante }}</td>
+                </tr>
+                {% endif %}
+                {% if object.viaticos %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Viáticos</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.viaticos }}</td>
+                </tr>
+                {% endif %}
+                {% if object.mojones %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Mojones / estacas / cintas peligro</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.mojones }}</td>
+                </tr>
+                {% endif %}
+                {% if object.alquiler_instrumentos %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Alquileres de instrumentos</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.alquiler_instrumentos }}</td>
+                </tr>
+                {% endif %}
+                {% if object.seguros_especiales %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Seguros especiales / eventuales</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.seguros_especiales }}</td>
+                </tr>
+                {% endif %}
+                {% if object.dibujante %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Dibujante</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.dibujante }}</td>
+                </tr>
+                {% endif %}
+                {% if object.impresiones %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Impresiones / ploteos</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.impresiones }}</td>
+                </tr>
+                {% endif %}
+                {% if object.gestor %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Gestor / Comisionista</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.gestor }}</td>
+                </tr>
+                {% endif %}
+                {% if object.ccu %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Certificado Catastral Urgente</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.ccu }}</td>
+                </tr>
+                {% endif %}
+                {% if object.estudio_titulos %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Estudio de Títulos</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.estudio_titulos }}</td>
+                </tr>
+                {% endif %}
+                {% if object.georreferenciacion %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Georreferenciación / Vinculación POSGAR2007</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.georreferenciacion }}</td>
+                </tr>
+                {% endif %}
+                {% if object.citaciones %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Citaciones / notificaciones certificadas</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.citaciones }}</td>
+                </tr>
+                {% endif %}
+                {% if object.otros_gastos %}
+                <tr class="table-secondary">
+                  <td></td>
+                  <td>Otros gastos sin categorizar</td>
+                  <td></td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.otros_gastos }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
             </tbody>
           </table>
         </div>
@@ -389,3 +450,20 @@ Trabajo /
   </div>
 </div>
 {% endblock content %}
+
+{% block javascripts %}
+<script>
+  function details(rubro) {
+    var btn = "#" + rubro;
+    var row = "#" + rubro + "-details";
+    if ($(row).is(":hidden")) {
+      $(btn).html("&minus;");
+      $(row).show();
+    }
+    else {
+      $(btn).html("&plus;");
+      $(row).hide();
+    }
+  }
+</script>
+{% endblock %}
