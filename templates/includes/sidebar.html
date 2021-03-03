@@ -1,9 +1,10 @@
+{% load static %}
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion d-print-none" id="accordionSidebar">
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
-    <div class="sidebar-brand-icon"><i class="fas fa-chart-line"></i></div>
-    <div class="sidebar-brand-text mx-3">Costos</div>
+    <div class="sidebar-brand-icon"><img src="{% static 'img/logo-costos.svg' %}" width=60%></div>
+    <div class="sidebar-brand-text mr-4">Costos</div>
   </a>
   <!-- Divider -->
   <hr class="sidebar-divider my-0">
@@ -120,10 +121,10 @@
   {% endif %}
   <!-- Divider -->
   <hr class="sidebar-divider">
+  {% endif %}
   <!-- Sidebar Toggler (Sidebar) -->
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
   </div>
-  {% endif %}
 </ul>
 <!-- End of Sidebar -->
