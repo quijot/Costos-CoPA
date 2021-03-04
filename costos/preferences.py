@@ -2,17 +2,26 @@ import decimal
 
 from dynamic_preferences.preferences import Section
 from dynamic_preferences.registries import global_preferences_registry
-from dynamic_preferences.types import DecimalPreference
+from dynamic_preferences.types import DecimalPreference, StringPreference
 from dynamic_preferences.users.registries import user_preferences_registry
 
 # Sections
 # --------
+sitio = Section("sitio")
 combustible = Section("combustible")
 trabajo = Section("trabajo", verbose_name="Preferencias de Trabajo")
 
 
 # Global Preferences
 # ------------------
+@global_preferences_registry.register
+class Nombre(StringPreference):
+    name = "nombre"
+    section = sitio
+    default = "Sitio"
+    required = False
+
+
 @global_preferences_registry.register
 class CotizacionDolar(DecimalPreference):
     name = "cotizacion_dolar"
