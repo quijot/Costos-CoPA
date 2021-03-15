@@ -85,8 +85,10 @@ class ChildrenContextMixin:
         context = self.get_context_data()
         formset = context[self.children]
         with transaction.atomic():
-            self.object = form.save()
             if formset.is_valid():
+                # Save parent only if each formset is valid
+                self.object = form.save()
+                # Set instance and save formset
                 formset.instance = self.object
                 formset.save()
             else:
