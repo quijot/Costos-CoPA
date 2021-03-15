@@ -194,6 +194,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Crispy Forms
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 # reCAPTCHA
 RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", "6LdB_wAaAAAAAErHBvEgeTC16AY3bow9zP2vbE9T")
@@ -202,6 +203,14 @@ RECAPTCHA_REQUIRED_SCORE = os.environ.get("RECAPTCHA_REQUIRED_SCORE", 0.75)
 
 # Dynamic Preferences
 TEMPLATES[0]["OPTIONS"]["context_processors"].append("dynamic_preferences.processors.global_preferences")
+DYNAMIC_PREFERENCES = {
+    # The python module in which registered preferences will be searched within each app
+    "REGISTRY_MODULE": "preferences",
+    # Allow quick editing of preferences directly in admin list view
+    # WARNING: enabling this feature can cause data corruption if multiple users
+    # use the same list view at the same time, see https://code.djangoproject.com/ticket/11313
+    "ADMIN_ENABLE_CHANGELIST_FORM": False,
+}
 
 # Logging
 LOGGING = {
