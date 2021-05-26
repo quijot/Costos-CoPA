@@ -11,7 +11,7 @@ Vehículo /
 {% if object.empresa == user.empresa %}
 <div class="btn-group d-print-none" role="group" aria-label="Actions">
   <a onclick="window.print();" class="d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
-    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>  
+    <i class="fas fa-print fa-sm text-white-50"></i> Imprimir</a>
   <a href="{{ object.get_delete_url }}" class="d-sm-inline-block btn btn-sm btn-danger shadow-sm">
     <i class="fas fa-trash fa-sm text-white-50"></i> Eliminar</a>
   <a href="{{ object.get_update_url }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -130,61 +130,86 @@ Vehículo /
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-sm table-condensed table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Concepto</th>
+                <th>Período</th>
+                <th style="text-align: right;">Total</th>
+                <th style="text-align: right;">por km</th>
+              </tr>
+            </thead>
             <tbody>
+              <tr>
+                <th>Valor residual</th>
+                <td>50% a 5 años</td>
+                <td style="text-align: right;">$ {{ object.valor_residual }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_valor }}</td>
+              </tr>
               <tr>
                 <th>Tipo Combustible</th>
                 <td>{{ object.get_tipo_combustible_display }} (por litro/m&sup3;)</td>
                 <td style="text-align: right;">$ {{ object.combustible_valor }}</td>
+                <td style="text-align: right;">$ {{ object.combustible }}</td>
               </tr>
               <tr>
                 <th>Cuota Patente</th>
-                <td></td>
+                <td>Bimestral</td>
                 <td style="text-align: right;">$ {{ object.costo_patente }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_patente }}</td>
               </tr>
               <tr>
                 <th>Seguro</th>
                 <td>Mensual</td>
                 <td style="text-align: right;">$ {{ object.costo_seguro }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_seguro }}</td>
               </tr>
               <tr>
                 <th>Cochera</th>
                 <td>Mensual</td>
                 <td style="text-align: right;">$ {{ object.costo_cochera }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_cochera }}</td>
               </tr>
               <tr>
                 <th>Lubricante</th>
                 <td>Semestral</td>
                 <td style="text-align: right;">$ {{ object.costo_lubricante }}</td>
+                <td style="text-align: right;">$ {{ object.lubricacion }}</td>
               </tr>
               <tr>
                 <th>Lavado</th>
                 <td>Mensual</td>
                 <td style="text-align: right;">$ {{ object.costo_lavado }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_lavado }}</td>
               </tr>
               <tr>
                 <th>Neumático</th>
                 <td>Cada 40.000 km</td>
                 <td style="text-align: right;">$ {{ object.costo_neumatico }}</td>
+                <td style="text-align: right;">$ {{ object.amortizacion_neumaticos }}</td>
               </tr>
               <tr>
                 <th>Service</th>
                 <td>Cada 10.000 km</td>
                 <td style="text-align: right;">$ {{ object.costo_service }}</td>
+                <td style="text-align: right;">$ {{ object.service }}</td>
               </tr>
               <tr>
                 <th>Revisión Técnica Obligatoria</th>
                 <td>Cada 2 años</td>
                 <td style="text-align: right;">$ {{ object.costo_rto }}</td>
+                <td style="text-align: right;">$ {{ object.rto }}</td>
               </tr>
               <tr>
                 <th>Reparaciones</th>
                 <td>Anual</td>
                 <td style="text-align: right;">$ {{ object.costo_anual_reparaciones }}</td>
+                <td style="text-align: right;">$ {{ object.reparaciones }}</td>
               </tr>
               <tr>
                 <th>Otros repuestos</th>
                 <td>Anual, 2% del valor</td>
                 <td style="text-align: right;">$ {{ object.repuestos }}</td>
+                <td style="text-align: right;">$ {{ object.repuestos_por_km }}</td>
               </tr>
             </tbody>
           </table>

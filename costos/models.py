@@ -204,17 +204,17 @@ class Vehiculo(models.Model):
 
     @property
     def combustible(self):
-        return self.combustible_valor / self.rendimiento
+        return round(self.combustible_valor / self.rendimiento, 2)
 
     @property
     def valor_residual(self):
         """Valor residual a 5 años."""
-        return self.valor / 2 if self.valor else 0
+        return round(self.valor / 2, 2) if self.valor else 0
 
     @property
     def amortizacion_valor(self):
         if self.valor:
-            return (self.valor - self.valor_residual) / (5 * self.kilometraje_anual)
+            return round((self.valor - self.valor_residual) / (5 * self.kilometraje_anual), 2)
         else:
             return 0
 
