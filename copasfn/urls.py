@@ -3,19 +3,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.urls import include, path
-from django.views.generic import RedirectView
 
 from .forms import AuthenticationFormCAPTCHA, EmailValidationOnForgotPassword
 
 urlpatterns = [
-    path("", RedirectView.as_view(url="costos/", permanent=True)),
-    path("costos/", include("costos.urls")),
+    path("", include("costos.urls")),
     path("admin/", admin.site.urls),
     # override Login
     path(
         "accounts/login/",
         LoginView.as_view(form_class=AuthenticationFormCAPTCHA),
-        name="login"
+        name="login",
     ),
     # override Reset Password
     path(
