@@ -158,15 +158,17 @@ ALLOWED_HOSTS = [
     CUSTOM_DOMAIN_NAME,
 ]
 
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = "/"
+# Redirect to "index" URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = "index"
+# Redirect to "login" URL after logout (Default redirects to /accounts/logout/)
+LOGOUT_REDIRECT_URL = "login"
 
 # Mail sending / default value is smtp
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # SendGrid
-DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", "infocostos@copasfn.org.ar")
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 EMAIL_HOST = "smtp.sendgrid.net"
 EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
