@@ -6,7 +6,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
-from .preferences import get_cotizacion_dolar, get_modulo_tributario, get_valor_litro
+from .preferences import get_aporte_caja, get_aporte_copa, get_cotizacion_dolar, get_modulo_tributario, get_valor_litro
 
 
 class Periodo(Enum):
@@ -406,10 +406,18 @@ class Trabajo(models.Model):
     vehiculos = models.ManyToManyField(Vehiculo, through="Movilidad", blank=True)
     instrumentos = models.ManyToManyField(Instrumento, through="Instrumental", blank=True)
     aporte_copa = models.DecimalField(
-        "aportes CoPA", max_digits=10, decimal_places=2, default=2200, help_text="Monto calculado según Sistema."
+        "aportes CoPA",
+        max_digits=10,
+        decimal_places=2,
+        default=get_aporte_copa,
+        help_text="Monto calculado según Sistema.",
     )
     aporte_caja = models.DecimalField(
-        "aportes Caja", max_digits=10, decimal_places=2, default=2890, help_text="Monto calculado según Sistema."
+        "aportes Caja",
+        max_digits=10,
+        decimal_places=2,
+        default=get_aporte_caja,
+        help_text="Monto calculado según Sistema.",
     )
     partidas = models.PositiveSmallIntegerField(
         "cantidad de partidas", default=1, help_text="Para cálculo de Sellados Fiscales e Informes Catastrales."

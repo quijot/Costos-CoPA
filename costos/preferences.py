@@ -10,6 +10,7 @@ from dynamic_preferences.users.registries import user_preferences_registry
 sitio = Section("sitio")
 combustible = Section("combustible")
 trabajo = Section("trabajo", verbose_name="Preferencias de Trabajo")
+aportes = Section("aportes", verbose_name="Aportes mínimos")
 
 
 # Global Preferences
@@ -74,6 +75,22 @@ class GNC(DecimalPreference):
     section = combustible
     default = decimal.Decimal(1)
     required = True
+
+
+@global_preferences_registry.register
+class CoPA(DecimalPreference):
+    name = "copa"
+    section = aportes
+    default = decimal.Decimal(2640.0)
+    required = False
+
+
+@global_preferences_registry.register
+class Caja(DecimalPreference):
+    name = "caja"
+    section = aportes
+    default = decimal.Decimal(3960.0)
+    required = False
 
 
 # User Preferences
@@ -172,7 +189,7 @@ class OtrosGastos(DecimalPreference):
 # -------
 def global_parameters(section, name):
     global_preferences = global_preferences_registry.manager()
-    param = f"{section}__{name}" if section else name
+    param = f"{section.name}__{name}" if section else name
     return global_preferences[param]
 
 
@@ -182,6 +199,14 @@ def get_cotizacion_dolar():
 
 def get_modulo_tributario():
     return global_parameters(None, "modulo_tributario")
+
+
+def get_aporte_copa():
+    return global_parameters(aportes, "copa")
+
+
+def get_aporte_caja():
+    return global_parameters(aportes, "caja")
 
 
 def get_valor_litro(tipo_combustible):
