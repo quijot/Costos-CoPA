@@ -98,7 +98,7 @@ Trabajo /
 </div>
 
 <div class="row mb-2">
-  <div class="col-lg-3 col-md-6 mb-2">
+  <div class="col-lg-2 col-md-4 mb-2">
     <div class="card bg-info text-white shadow">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -107,13 +107,13 @@ Trabajo /
             <div class="h5 mb-0 font-weight-bold">{{ object.cantidad_de_profesionales }}</div>
           </div>
           <div class="col-auto">
-            <i class="fas fa-users fa-2x text-gray-300"></i>
+            <i class="fas {% if object.cantidad_de_profesionales > 1 %}fa-users{% else %}fa-user{% endif %} fa-2x text-gray-300"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-3 col-md-6 mb-2">
+  <div class="col-lg-2 col-md-4 mb-2">
     <div class="card bg-success text-white shadow">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -128,7 +128,7 @@ Trabajo /
       </div>
     </div>
   </div>
-  <div class="col-lg-3 col-md-6 mb-2">
+  <div class="col-lg-2 col-md-4 mb-2">
     <div class="card bg-warning text-white shadow">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -143,7 +143,37 @@ Trabajo /
       </div>
     </div>
   </div>
-  <div class="col-lg-3 col-md-6 mb-2">
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="card bg-danger text-white shadow">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-white-50 small font-weight-bold text-uppercase"># aportes</div>
+            <div class="h5 mb-0 font-weight-bold">$ {{ object.aportes }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-file-contract fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
+    <div class="card bg-secondary text-white shadow">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-white-50 small font-weight-bold text-uppercase"># demás gastos</div>
+            <div class="h5 mb-0 font-weight-bold">$ {{ object.gastos_especificos }}</div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2 col-md-4 mb-2">
     <div class="card bg-dark text-white shadow">
       <div class="card-body">
         <div class="row no-gutters align-items-center">
@@ -173,25 +203,25 @@ Trabajo /
         <h4 class="small font-weight-bold">Proporciones <span class="float-right">100%</span>
         </h4>
         <div class="progress mb-2" style="height: 30px;">
-          <div title="Empresa" class="progress-bar bg-primary" role="progressbar"
+          <div title="Empresa" class="progress-bar bg-primary" role="progressbar" onclick="details('empresa');"
             style="width: {{ object.proporcion_empresa|safe }}%" aria-valuenow="{{ object.proporcion_empresa|safe }}"
             aria-valuemin="0" aria-valuemax="100">{{ object.proporcion_empresa|safe }}%</div>
-          <div title="Actuantes" class="progress-bar bg-info" role="progressbar"
+          <div title="Actuantes" class="progress-bar bg-info" role="progressbar" onclick="details('actuantes');"
             style="width: {{ object.proporcion_actuantes|safe }}%"
             aria-valuenow="{{ object.proporcion_actuantes|safe }}" aria-valuemin="0" aria-valuemax="100">
             {{ object.proporcion_actuantes|safe }}%</div>
-          <div title="Movilidad" class="progress-bar bg-success" role="progressbar"
+          <div title="Movilidad" class="progress-bar bg-success" role="progressbar" onclick="details('movilidad');"
             style="width: {{ object.proporcion_movilidad|safe }}%"
             aria-valuenow="{{ object.proporcion_movilidad|safe }}" aria-valuemin="0" aria-valuemax="100">
             {{ object.proporcion_movilidad|safe }}%</div>
-          <div title="Instrumental" class="progress-bar bg-warning" role="progressbar"
+          <div title="Instrumental" class="progress-bar bg-warning" role="progressbar" onclick="details('instrumental');"
             style="width: {{ object.proporcion_instrumental|safe }}%"
             aria-valuenow="{{ object.proporcion_instrumental|safe }}" aria-valuemin="0" aria-valuemax="100">
             {{ object.proporcion_instrumental|safe }}%</div>
-          <div title="Aportes" class="progress-bar bg-danger" role="progressbar"
+          <div title="Aportes" class="progress-bar bg-danger" role="progressbar" onclick="details('aportes');"
             style="width: {{ object.proporcion_aportes|safe }}%" aria-valuenow="{{ object.proporcion_aportes|safe }}"
             aria-valuemin="0" aria-valuemax="100">{{ object.proporcion_aportes|safe }}%</div>
-          <div title="Específicos" class="progress-bar bg-secondary" role="progressbar"
+          <div title="Específicos" class="progress-bar bg-secondary" role="progressbar" onclick="details('especificos');"
             style="width: {{ object.proporcion_especificos|safe }}%"
             aria-valuenow="{{ object.proporcion_especificos|safe }}" aria-valuemin="0" aria-valuemax="100">
             {{ object.proporcion_especificos|safe }}%</div>
@@ -211,7 +241,7 @@ Trabajo /
                 <th><button class="btn btn-circle btn-sm btn-primary" id="empresa" onclick="details('empresa');">&plus;</button></th>
                 <th>GASTOS DE EMPRESA</th>
                 <td>{{ object.horas_total }} horas</td>
-                <td style="text-align:right">$ {{ object.gastos_de_empresa }}</td>
+                <th style="text-align:right">$ {{ object.gastos_de_empresa }}</th>
               </tr>
               <tbody style="display:none" id="empresa-details">
                 {% for o in object.actuantes.all %}
@@ -229,7 +259,7 @@ Trabajo /
                 <td>{{ object.cantidad_de_profesionales }}
                   profesional{% if object.cantidad_de_profesionales > 1 %}es{% endif %} - {{ object.horas_total }} horas
                 </td>
-                <td style="text-align:right">$ {{ object.costo_actuantes }}</td>
+                <th style="text-align:right">$ {{ object.costo_actuantes }}</th>
               </tr>
               <tbody style="display:none" id="actuantes-details">
                 {% for o in object.actuantes.all %}
@@ -246,7 +276,7 @@ Trabajo /
                 <th>COSTO DE MOVILIDAD</th>
                 <td>{{ object.cantidad_de_vehiculos }} vehículo{% if object.cantidad_de_vehiculos > 1 %}s{% endif %} -
                   {{ object.cantidad_de_km }} km</td>
-                <td style="text-align:right">$ {{ object.costo_movilidad }}</td>
+                <th style="text-align:right">$ {{ object.costo_movilidad }}</th>
               </tr>
               <tbody style="display:none" id="movilidad-details">
                 {% for o in object.movilidad.all %}
@@ -264,7 +294,7 @@ Trabajo /
                 <td>{{ object.cantidad_de_instrumentos }}
                   instrumento{% if object.cantidad_de_instrumentos > 1 %}s{% endif %} -
                   {{ object.cantidad_de_jornadas }} jornada{% if object.cantidad_de_instrumentos > 1 %}s{% endif %}</td>
-                <td style="text-align:right">$ {{ object.costo_instrumental }}</td>
+                <th style="text-align:right">$ {{ object.costo_instrumental }}</th>
               </tr>
               <tbody style="display:none" id="instrumental-details">
                 {% for o in object.instrumental.all %}
@@ -280,7 +310,7 @@ Trabajo /
                 <th><button class="btn btn-circle btn-sm btn-danger" id="aportes" onclick="details('aportes');">&plus;</button></th>
                 <th>APORTES PROFESIONALES</th>
                 <td>CoPA + Caja</td>
-                <td style="text-align:right">$ {{ object.aportes }}</td>
+                <th style="text-align:right">$ {{ object.aportes }}</th>
               </tr>
               <tbody style="display:none" id="aportes-details">
                 <tr class="table-danger">
@@ -300,7 +330,7 @@ Trabajo /
                 <th><button class="btn btn-circle btn-sm btn-secondary" id="especificos" onclick="details('especificos');">&plus;</button></th>
                 <th>Demás gastos específicos</th>
                 <td></td>
-                <td style="text-align:right">$ {{ object.gastos_especificos }}</td>
+                <th style="text-align:right">$ {{ object.gastos_especificos }}</th>
               </tr>
               <tbody style="display:none" id="especificos-details">
                 {% if object.partidas %}
@@ -309,7 +339,7 @@ Trabajo /
                   <td>Sellado Fiscal</td>
                   <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %} -
                     {{ object.lotes_finales }} lote{% if object.partidas > 1 %}s{% endif %}</td>
-                  <td style="text-align:right" class="pr-4">$ {{ object.sellado_fiscal }}</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.sellado_fiscal|floatformat:2 }}</td>
                 </tr>
                 <tr class="table-secondary">
                   <td></td>
@@ -318,7 +348,7 @@ Trabajo /
                     Catastral{% if object.partidas > 1 %}es{% endif %}
                   </td>
                   <td>{{ object.partidas }} partida{% if object.partidas > 1 %}s{% endif %}</td>
-                  <td style="text-align:right" class="pr-4">$ {{ object.informe_catastral }}</td>
+                  <td style="text-align:right" class="pr-4">$ {{ object.informe_catastral|floatformat:2 }}</td>
                 </tr>
                 {% endif %}
                 {% if object.escrituras %}
