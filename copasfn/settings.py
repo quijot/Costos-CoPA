@@ -62,12 +62,16 @@ WSGI_APPLICATION = "copasfn.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "costos",
+        "USER": "santi",
+        "PASSWORD": "",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
@@ -147,15 +151,14 @@ TEMPLATES[0]["DIRS"].append(BASE_DIR / "templates")
 
 # Deployment
 
-# Heroku
-HEROKUAPP_NAME = os.environ.get("DJANGO_HEROKUAPP_NAME", "copasfn")
+# Environment Variables
+APP_NAME = os.environ.get("DJANGO_APP_NAME", "copasfn")
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "r+)1xlbz%lau$zpv$mbn#_6cy6rkc-eg!2@0s45jx!2ubuo3m1")
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 CUSTOM_DOMAIN_NAME = os.environ.get("CUSTOM_DOMAIN_NAME", "")
 ALLOWED_HOSTS = [
     "127.0.0.1",
-    # f"{HEROKUAPP_NAME}.herokuapp.com",  # this should be commented out if CUSTOM_DOMAIN_NAME is set
-    "copasfn.herokuapp.com",
+    f"{APP_NAME}.up.railway.app",  # this should be commented out if CUSTOM_DOMAIN_NAME is set
     CUSTOM_DOMAIN_NAME,
 ]
 
@@ -177,7 +180,7 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Heroku: Update DATABASE configuration from $DATABASE_URL.
+# Update DATABASE configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES["default"].update(db_from_env)
 
