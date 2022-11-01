@@ -2,6 +2,7 @@
 django_project_heroku_template
 ==============================
 
+
 *A minimal Django project template ready for heroku*, using
 
 - Python >=3.6 (because we love ``f-strings``)
