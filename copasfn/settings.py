@@ -135,6 +135,7 @@ APPS_AFTER = [
     "django_extensions",
     "crispy_forms",
     "captcha",
+    "anymail",
 ]
 # Apps installed before have priority
 INSTALLED_APPS = APPS_BEFORE + INSTALLED_APPS + APPS_AFTER
@@ -168,17 +169,16 @@ LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "login"
 
 # Mail sending / default value is smtp
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-# SendGrid
+# Anymail [sendgrid]
+ANYMAIL = {
+    "SENDGRID_API_KEY": os.environ.get("SENDGRID_API_KEY"),
+}
 DEFAULT_FROM_EMAIL = os.environ.get("DJANGO_DEFAULT_FROM_EMAIL", "infocostos@copasfn.org.ar")
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
-EMAIL_HOST = "smtp.sendgrid.net"
-EMAIL_HOST_USER = "apikey"  # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Update DATABASE configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
