@@ -184,6 +184,9 @@ EMAIL_USE_TLS = True
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES["default"].update(db_from_env)
 
+# AutoField configuration
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"  # "django.db.models.BigAutoField" is the default since Django 3.2
+
 # Static files
 
 # The list of folders where Django will search for additional static files aside from the static folder of each app installed.
