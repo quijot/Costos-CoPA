@@ -154,31 +154,31 @@ class Vehiculo(models.Model):
         "rendimiento [km/l]", default=9, help_text="Rendimiento promedio en km por litro."
     )
     costo_patente = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo de cada cuota de la patente."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo de cada cuota de la patente."
     )
     costo_seguro = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo mensual del seguro."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo mensual del seguro."
     )
     costo_cochera = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo mensual de cochera / garage."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo mensual de cochera / garage."
     )
     costo_lubricante = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo del lubricante (calcula cada 6 meses)."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo del lubricante (calcula cada 6 meses)."
     )
     costo_lavado = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Gastos mensuales en lavado."
+        max_digits=10, decimal_places=2, default=0, help_text="Gastos mensuales en lavado."
     )
     costo_neumatico = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo de 1 neumático (calcula cada 40.000 km)."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo de 1 neumático (calcula cada 40.000 km)."
     )
     costo_service = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Costo de Service general (calcula cada 10.000 km)."
+        max_digits=10, decimal_places=2, default=0, help_text="Costo de Service general (calcula cada 10.000 km)."
     )
     costo_anual_reparaciones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Estimado de reparaciones por año."
+        max_digits=10, decimal_places=2, default=0, help_text="Estimado de reparaciones por año."
     )
     costo_rto = models.DecimalField(
-        "RTO", max_digits=8, decimal_places=2, default=0, help_text="Costo de Revisión Técnica Obligatoria."
+        "RTO", max_digits=10, decimal_places=2, default=0, help_text="Costo de Revisión Técnica Obligatoria."
     )
 
     class Meta:
@@ -289,7 +289,7 @@ class Instrumento(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="instrumentos")
     nombre = models.CharField(max_length=30)
     valor_USD = models.DecimalField(
-        max_digits=8,
+        max_digits=10,
         decimal_places=2,
         help_text="Valor de reposición en dólares. Cotización dólar oficial según Banco Nación.",
     )
@@ -341,7 +341,7 @@ class TipoGasto(models.Model):
 class Gasto(models.Model):
     tipo = models.ForeignKey(TipoGasto, on_delete=models.CASCADE)
     descripcion = models.CharField("descripción", max_length=100, blank=True)
-    monto = models.DecimalField(max_digits=8, decimal_places=2)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
     PERIODO = (
         (Periodo.DIA.value, "Diario"),
         (Periodo.SEMANA.value, "Semanal"),
@@ -424,62 +424,62 @@ class Trabajo(models.Model):
     )
     lotes_finales = models.PositiveSmallIntegerField(default=1, help_text="Para cálculo de Sellados Fiscales.")
     escrituras = models.DecimalField(
-        "monto por escrituras", max_digits=8, decimal_places=2, default=0, help_text="Gasto por pedidos al RGP."
+        "monto por escrituras", max_digits=10, decimal_places=2, default=0, help_text="Gasto por pedidos al RGP."
     )
     visados = models.DecimalField(
-        "monto por visados", max_digits=8, decimal_places=2, default=0, help_text="Gastos en reparticiones públicas."
+        "monto por visados", max_digits=10, decimal_places=2, default=0, help_text="Gastos en reparticiones públicas."
     )
     ccu = models.DecimalField(
         "Certificado Catastral Urgente",
-        max_digits=8,
+        max_digits=10,
         decimal_places=2,
         default=0,
         help_text="Pago de sellados por CCU.",
     )
     estudio_titulos = models.DecimalField(
         "estudio de títulos",
-        max_digits=8,
+        max_digits=10,
         decimal_places=2,
         default=0,
         help_text="Gastos extra por Estudio de Títulos.",
     )
     georreferenciacion = models.DecimalField(
         "georreferenciación",
-        max_digits=8,
+        max_digits=10,
         decimal_places=2,
         default=0,
         help_text="Gastos extra por Georreferenciación.",
     )
     citaciones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Pago de envío / estampillados por notificaciones."
+        max_digits=10, decimal_places=2, default=0, help_text="Pago de envío / estampillados por notificaciones."
     )
     viaticos = models.DecimalField(
-        "viáticos", max_digits=8, decimal_places=2, default=0, help_text="Pago de alojamiento / comidas."
+        "viáticos", max_digits=10, decimal_places=2, default=0, help_text="Pago de alojamiento / comidas."
     )
     ayudante = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Pago de jornales a ayudante/s."
+        max_digits=10, decimal_places=2, default=0, help_text="Pago de jornales a ayudante/s."
     )
-    dibujante = models.DecimalField(max_digits=8, decimal_places=2, default=0, help_text="Pago a dibujante/s.")
+    dibujante = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text="Pago a dibujante/s.")
     impresiones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Pago por ploteos / impresiones de documentación."
+        max_digits=10, decimal_places=2, default=0, help_text="Pago por ploteos / impresiones de documentación."
     )
     mojones = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Gasto en hierros, estacas, pintura, cintas peligro."
+        max_digits=10, decimal_places=2, default=0, help_text="Gasto en hierros, estacas, pintura, cintas peligro."
     )
     gestor = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Pago a gestores, comisionistas, fletes."
+        max_digits=10, decimal_places=2, default=0, help_text="Pago a gestores, comisionistas, fletes."
     )
     seguros_especiales = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Pago de seguros ocasionales para este trabajo."
+        max_digits=10, decimal_places=2, default=0, help_text="Pago de seguros ocasionales para este trabajo."
     )
     alquiler_instrumentos = models.DecimalField(
-        max_digits=8,
+        max_digits=10,
         decimal_places=2,
         default=0,
         help_text="Pago de alquileres ocasionales para este trabajo.",
     )
     otros_gastos = models.DecimalField(
-        max_digits=8, decimal_places=2, default=0, help_text="Otros gastos sin categorizar."
+        max_digits=10, decimal_places=2, default=0, help_text="Otros gastos sin categorizar."
     )
 
     class Meta:
