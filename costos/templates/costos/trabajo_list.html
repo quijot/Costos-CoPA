@@ -1,8 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
-{% block stylesheets %}
-<link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
-{% endblock stylesheets %}
 {% block title %}Trabajos{% endblock %}
 
 {% block page-heading %}
@@ -27,13 +23,46 @@
 {% block content %}
 <div class="card shadow mb-4">
   <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12 col-md-5">
+        {% include "helpers/paginate_by_control.html" %}
+      </div>
+      <div class="col-sm-12 col-md-7">
+        {% include "helpers/search_control.html" %}
+      </div>
+    </div>
     <div class="table-responsive">
       <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Expediente</th>
-            <th>Comitente</th>
-            <th>Fecha</th>
+            <form class="form-inline" action="." method="get">
+              <th>Expediente
+                <input type="hidden" id="order" name="order"
+                  value="{% if request.GET.order == 'expediente' %}-expediente{% else %}expediente{% endif %}">
+                <button type="submit" class="btn btn-sm">
+                  <i class="fas fa-fw {% if 'expediente' not in request.GET.order %}fa-sort{% elif request.GET.order == 'expediente' %}fa-sort-down{% else %}fa-sort-up{% endif %} mx-1"></i>
+                </button>
+              </th>
+            </form>
+            <form class="form-inline" action="." method="get">
+              <th>Comitente
+                <input type="hidden" id="order" name="order"
+                  value="{% if request.GET.order == 'comitente' %}-comitente{% else %}comitente{% endif %}">
+                <button type="submit" class="btn btn-sm">
+                  <i class="fas fa-fw {% if 'comitente' not in request.GET.order %}fa-sort{% elif request.GET.order == 'comitente' %}fa-sort-down{% else %}fa-sort-up{% endif %} mx-1"></i>
+                </button>
+              </th>
+            </form>
+            <form class="form-inline" action="." method="get">
+              <th>Fecha
+                <input type="hidden" id="order" name="order"
+                  value="{% if request.GET.order == 'fecha' %}-fecha{% else %}fecha{% endif %}">
+                <button type="submit" class="btn btn-sm">
+                  <i class="fas fa-fw {% if 'fecha' not in request.GET.order %}fa-sort{% elif request.GET.order == 'fecha' %}fa-sort-down{% else %}fa-sort-up{% endif %} mx-1"></i>
+                </button>
+              </th>
+            </form>
+            <form class="form-inline" action="." method="get">
             <th>Costo</th>
             <th>Acciones</th>
           </tr>
@@ -68,12 +97,9 @@
         </tbody>
       </table>
     </div>
+    <div class="row">
+      {% include "helpers/pagination_bar.html" %}
+    </div>
   </div>
 </div>
 {% endblock content %}
-
-{% block javascripts %}
-<script src="{% static 'dashboard/vendor/datatables/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'dashboard/js/dataTables.config.js' %}"></script>
-{% endblock javascripts %}

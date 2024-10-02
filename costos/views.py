@@ -22,6 +22,15 @@ class CounterMixin:
         return context
 
 
+class PaginateByMixin:
+    def get_paginate_by(self, queryset):
+        """
+        Paginate by specified value in querystring, or use default class
+        property value.
+        """
+        return self.request.GET.get("paginate_by", self.paginate_by)
+
+
 class Home(generic.TemplateView):
     template_name = "index.html"
 
@@ -40,11 +49,36 @@ class SuccessDeleteMessageMixin:
         return super().delete(request, *args, **kwargs)
 
 
+class SearchMixin:
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get("search", "").split()
+        for word in q:
+            # Filter by many fields example
+            # qs = qs.filter(
+            #     Q(fecha__contains=word)
+            #     | Q(expediente__contains=word)
+            #     | Q(comitente__contains=word)
+            # ).distinct()
+            qs = qs.filter(comitente__icontains=word)
+        return qs
+
+
+class SortMixin:
+    def get_queryset(self):
+        qset = super().get_queryset()
+        q = self.request.GET.get("order")
+        if q:
+            qset = qset.order_by(q)
+        return qset
+
+
 class EmpresaFilterMixin:
     def get_queryset(self):
         """
         Returns only objects related to the User's Empresa.
         """
+        # ToDo: PLEASE REFACTOR THIS NESTED IFs !!
         if self.request.user.empresa:
             if self.model == models.Empresa:
                 qs = self.model.objects.filter(id=self.request.user.empresa.pk)
@@ -270,8 +304,16 @@ class VehiculoDeleteView(SuccessDeleteMessageMixin, EmpresaFilterMixin, mixins.L
     success_message = "Vehículo eliminado con éxito."
 
 
-class TrabajoListView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.ListView):
+class TrabajoListView(
+    mixins.LoginRequiredMixin,
+    PaginateByMixin,
+    SearchMixin,
+    SortMixin,
+    EmpresaFilterMixin,
+    generic.ListView,
+):
     model = models.Trabajo
+    paginate_by = 10
 
 
 class TrabajoDetailView(EmpresaFilterMixin, mixins.LoginRequiredMixin, generic.DetailView):
