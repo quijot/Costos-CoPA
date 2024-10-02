@@ -677,7 +677,13 @@ class Movilidad(models.Model):
 class Instrumental(models.Model):
     trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, related_name="instrumental")
     instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE, related_name="trabajos")
-    jornadas = models.PositiveSmallIntegerField(default=1, help_text="Jornadas de utilización.")
+    # jornadas = models.PositiveSmallIntegerField(default=1, help_text="Jornadas de utilización.")
+    jornadas = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        default=1.0,
+        help_text="Jornadas de utilización. (Admite fracción)"
+    )
 
     class Meta:
         ordering = ["-jornadas", "instrumento"]
