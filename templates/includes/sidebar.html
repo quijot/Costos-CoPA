@@ -1,9 +1,9 @@
 {% load static %}
 
 <style>
-li.nav-item {
-  line-height: 1;
-}
+  li.nav-item {
+    line-height: 1;
+  }
 </style>
 
 <!-- Sidebar -->
@@ -74,13 +74,28 @@ li.nav-item {
       <span>Vehículos</span>
     </a>
   </li>
-  <!-- Nav Item - Trabajos Menu -->
-  {% url 'trabajo_list' as url %}
-  <li class="nav-item{% if request.path == url %} active{% endif %}">
-    <a class="nav-link" href="{{ url }}">
+  <!-- Nav Item - Trabajos Collapse Menu -->
+  <li class="nav-item{% if 'trabajo' in request.path %} active{% endif %}">
+    <a class="nav-link{% if not 'trabajo' in request.path %} collapsed{% endif %}" href="#" data-toggle="collapse"
+      data-target="#collapseTrabajos" aria-expanded="false" aria-controls="collapseTrabajos">
       <i class="fas fa-fw fa-map"></i>
       <span>Trabajos</span>
     </a>
+    <div id="collapseTrabajos" class="collapse{% if 'trabajo' in request.path %} show{% endif %}"
+      aria-labelledby="headingTrabajos" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        {% url 'trabajo_create' as url %}
+        <a class="collapse-item{% if request.path == url %} active{% endif %}" href="{{ url }}">
+          <i class="fas fa-fw fa-plus"></i>
+          <span>Calcular nuevo</span>
+        </a>
+        {% url 'trabajo_list' as url %}
+        <a class="collapse-item{% if request.path == url %} active{% endif %}" href="{{ url }}">
+          <i class="fas fa-fw fa-map"></i>
+          <span>Listado</span>
+        </a>
+      </div>
+    </div>
   </li>
   <!-- Divider -->
   <hr class="sidebar-divider">
